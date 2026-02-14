@@ -1,0 +1,54 @@
+<div class="auth-page">
+  <div class="auth-left">
+    <div class="brand">
+      <div class="brand-icon">
+        <mat-icon>school</mat-icon>
+      </div>
+      <h1>ISTY</h1>
+      <p>Gestion PFE & Présences</p>
+      <span class="brand-subtitle">Plateforme de suivi académique et de gestion des projets de fin d'études</span>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <mat-card class="auth-card">
+      <mat-card-header>
+        <mat-card-title>Connexion</mat-card-title>
+        <mat-card-subtitle>Accédez à votre espace</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" type="email" placeholder="etudiant&#64;isty.fr">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">L'email est requis</mat-error>
+            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Email invalide</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Mot de passe</mat-label>
+            <input matInput formControlName="motDePasse" [type]="hidePassword ? 'password' : 'text'">
+            <mat-icon matPrefix>lock</mat-icon>
+            <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="loginForm.get('motDePasse')?.hasError('required')">Le mot de passe est requis</mat-error>
+          </mat-form-field>
+
+          <button mat-flat-button color="primary" type="submit" class="submit-btn" [disabled]="loginForm.invalid || loading">
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+            <span *ngIf="!loading">Se connecter</span>
+          </button>
+        </form>
+      </mat-card-content>
+
+      <mat-card-actions align="end">
+        <span class="auth-link">Pas encore de compte ?
+          <a routerLink="/register">Créer un compte</a>
+        </span>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

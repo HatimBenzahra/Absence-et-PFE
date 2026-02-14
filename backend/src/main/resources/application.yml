@@ -21,7 +21,7 @@ spring:
         format_sql: true
 
 jwt:
-  secret: votre_secret_jwt_tres_long_et_securise_pour_isty_pfe_absences_2024
+  secret: dm90cmVfc2VjcmV0X2p3dF90cmVzX2xvbmdfZXRfc2VjdXJpc2VfcG91cl9pc3R5X3BmZV9hYnNlbmNlc18yMDI0
   expiration: 86400000
 
 springdoc:

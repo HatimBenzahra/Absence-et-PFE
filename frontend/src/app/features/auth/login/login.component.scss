@@ -1,6 +1,158 @@
-@import '../auth.styles.scss';
+.auth-page {
+  display: flex;
+  min-height: 100vh;
+}
 
-// Specific styles for Login if needed
-.login-card {
-  @extend .auth-card;
+.auth-left {
+  flex: 1;
+  background: linear-gradient(135deg, #1a237e 0%, #3949ab 50%, #5c6bc0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  padding: 48px;
+
+  .brand {
+    text-align: center;
+    max-width: 400px;
+
+    .brand-icon {
+      width: 80px;
+      height: 80px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+
+      mat-icon {
+        font-size: 40px;
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+
+    p {
+      font-size: 18px;
+      font-weight: 500;
+      opacity: 0.9;
+      margin-bottom: 16px;
+    }
+
+    .brand-subtitle {
+      font-size: 14px;
+      opacity: 0.7;
+      line-height: 1.6;
+    }
+  }
+}
+
+.auth-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background: #fafafa;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  padding: 40px;
+  border-radius: 16px;
+
+  mat-card-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  mat-card-subtitle {
+    font-size: 15px;
+  }
+
+  mat-card-header {
+    margin-bottom: 32px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  mat-form-field {
+    width: 100%;
+  }
+
+  .submit-btn {
+    width: 100%;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    margin-top: 8px;
+
+    mat-spinner {
+      display: inline-block;
+      margin: auto;
+    }
+  }
+
+  mat-card-actions {
+    margin-top: 24px;
+    padding: 0;
+  }
+
+  .auth-link {
+    font-size: 14px;
+    color: #64748b;
+    width: 100%;
+    text-align: center;
+
+    a {
+      color: #1a237e;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-page {
+    flex-direction: column;
+  }
+
+  .auth-left {
+    padding: 32px;
+    min-height: auto;
+
+    .brand h1 {
+      font-size: 28px;
+    }
+
+    .brand-subtitle {
+      display: none;
+    }
+  }
+
+  .auth-right {
+    padding: 24px;
+  }
+
+  .auth-card {
+    padding: 24px;
+  }
 }

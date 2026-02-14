@@ -24,9 +24,13 @@ export interface RegisterRequest {
   prenom: string;
   email: string;
   motDePasse: string;
+  role: Role;
   numEtudiant?: string;
   groupe?: string;
   filiere?: string;
+  departement?: string;
+  grade?: string;
+  fonction?: string;
 }
 
 export interface JwtResponse {

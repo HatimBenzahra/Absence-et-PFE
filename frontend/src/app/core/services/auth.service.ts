@@ -23,8 +23,14 @@ export class AuthService {
       }));
   }
 
-  register(data: RegisterRequest): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register/etudiant`, data);
+  register(data: RegisterRequest): Observable<unknown> {
+    const endpoints: Record<string, string> = {
+      ETUDIANT: '/register/etudiant',
+      ENSEIGNANT: '/register/enseignant',
+      RESPONSABLE_PFE: '/register',
+    };
+    const endpoint = endpoints[data.role] ?? '/register';
+    return this.http.post(`${this.apiUrl}${endpoint}`, data);
   }
 
   logout(): void {

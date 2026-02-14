@@ -1,86 +1,47 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MaterialModule } from '../../shared/material.module';
+import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
-import { User, Role } from '../../core/models/user.model';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, MaterialModule],
+  imports: [MatCardModule, MatButtonModule, MatIconModule],
   template: `
-    <div class="dashboard-container">
-      <h1>Bienvenue, {{ user?.prenom }} {{ user?.nom }}</h1>
-      <p>Rôle: {{ user?.role }}</p>
-
-      <div class="dashboard-cards">
-        <mat-card *ngIf="isEtudiant()">
-          <mat-card-header>
-            <mat-card-title>Mon PFE</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>Accédez à votre espace PFE pour voir vos candidatures et votre affectation.</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary" routerLink="/projets/mon-pfe">Voir mon PFE</button>
-          </mat-card-actions>
-        </mat-card>
-
-        <mat-card *ngIf="isEtudiant()">
-          <mat-card-header>
-            <mat-card-title>Mes Présences</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>Consultez votre historique de présence et scannez les QR codes.</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary" routerLink="/presences/pointage">Scanner QR</button>
-          </mat-card-actions>
-        </mat-card>
-
-        <mat-card *ngIf="isEnseignant()">
-          <mat-card-header>
-            <mat-card-title>Mes Séances</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>Gérez vos séances et générez les QR codes pour l'appel.</p>
-          </mat-card-content>
-          <mat-card-actions>
-            <button mat-button color="primary" routerLink="/presences/mes-seances">Voir mes séances</button>
-          </mat-card-actions>
-        </mat-card>
-      </div>
+    <div class="dashboard">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Bienvenue, {{ authService.getCurrentUser()?.prenom }} !</mat-card-title>
+          <mat-card-subtitle>Vous êtes connecté en tant que {{ authService.getCurrentUser()?.role }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-stroked-button color="warn" (click)="logout()">
+            <mat-icon>logout</mat-icon>
+            Se déconnecter
+          </button>
+        </mat-card-actions>
+      </mat-card>
     </div>
   `,
   styles: [`
-    .dashboard-container {
-      padding: 20px;
-    }
-    .dashboard-cards {
+    .dashboard {
       display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 24px;
+      background: #fafafa;
     }
-    mat-card {
-      width: 300px;
-    }
-  `]
+    mat-card { max-width: 500px; padding: 32px; border-radius: 16px; }
+  `],
 })
-export class DashboardComponent implements OnInit {
-  user: User | null = null;
+export class DashboardComponent {
+  constructor(public authService: AuthService, private router: Router) {}
 
-  constructor(private authService: AuthService) {}
-
-  ngOnInit() {
-    this.user = this.authService.getCurrentUser();
-  }
-
-  isEtudiant(): boolean {
-    return this.authService.hasRole(Role.ETUDIANT);
-  }
-
-  isEnseignant(): boolean {
-    return this.authService.hasRole(Role.ENSEIGNANT);
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }
