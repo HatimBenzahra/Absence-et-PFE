@@ -1,0 +1,6 @@
+@import '../auth.styles.scss';
+
+// Specific styles for Login if needed
+.login-card {
+  @extend .auth-card;
+}
