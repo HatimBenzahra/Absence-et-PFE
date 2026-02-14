@@ -1,28 +1,30 @@
-<div class="auth-page">
-  <div class="auth-left">
-    <div class="brand">
-      <div class="brand-icon">
-        <mat-icon>school</mat-icon>
-      </div>
-      <h1>ISTY</h1>
-      <p>Rejoignez la plateforme</p>
-      <span class="brand-subtitle">Créez votre compte pour accéder à la gestion des PFE et présences</span>
+<div class="auth-container">
+  <div class="auth-visual">
+    <div class="visual-content">
+      <img src="assets/logo-isty.png" alt="ISTY - UVSQ" class="brand-logo" />
+      <p class="tagline">Rejoignez la plateforme</p>
+      <p class="description">Créez votre compte pour accéder à la gestion des PFE et présences</p>
     </div>
+
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+    <div class="glass-overlay"></div>
   </div>
 
-  <div class="auth-right">
+  <div class="auth-form-container">
     <mat-card class="auth-card">
       <mat-card-header>
         <mat-card-title>Inscription</mat-card-title>
-        <mat-card-subtitle>Créez votre compte</mat-card-subtitle>
+        <mat-card-subtitle>Créez votre compte en quelques étapes</mat-card-subtitle>
       </mat-card-header>
 
       <mat-card-content>
-        <mat-stepper linear #stepper>
+        <mat-stepper linear #stepper class="custom-stepper">
 
           <mat-step [stepControl]="infoForm" label="Profil">
-            <form [formGroup]="infoForm">
-              <mat-form-field appearance="outline">
+            <form [formGroup]="infoForm" class="step-form">
+              <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Rôle</mat-label>
                 <mat-select formControlName="role" (selectionChange)="onRoleChange()">
                   <mat-option *ngFor="let r of roles" [value]="r.value">{{ r.label }}</mat-option>
@@ -31,44 +33,46 @@
               </mat-form-field>
 
               <div class="form-row">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Nom</mat-label>
                   <input matInput formControlName="nom" placeholder="Votre nom">
                   <mat-error *ngIf="infoForm.get('nom')?.hasError('required')">Le nom est requis</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Prénom</mat-label>
                   <input matInput formControlName="prenom" placeholder="Votre prénom">
                   <mat-error *ngIf="infoForm.get('prenom')?.hasError('required')">Le prénom est requis</mat-error>
                 </mat-form-field>
               </div>
 
-              <div>
-                <button mat-flat-button color="primary" matStepperNext type="button">Suivant</button>
+              <div class="step-actions">
+                <button mat-flat-button color="primary" matStepperNext type="button" class="action-btn">
+                  Suivant <mat-icon>arrow_forward</mat-icon>
+                </button>
               </div>
             </form>
           </mat-step>
 
           <mat-step [stepControl]="roleForm" [label]="selectedRole === 'ETUDIANT' ? 'Études' : 'Infos pro'">
-            <form [formGroup]="roleForm">
+            <form [formGroup]="roleForm" class="step-form">
 
               <ng-container *ngIf="selectedRole === 'ETUDIANT'">
                 <div class="form-row">
-                  <mat-form-field appearance="outline">
+                  <mat-form-field appearance="outline" class="custom-field">
                     <mat-label>N° Étudiant</mat-label>
                     <input matInput formControlName="numEtudiant" placeholder="Ex. 20230001">
                     <mat-error>Requis</mat-error>
                   </mat-form-field>
 
-                  <mat-form-field appearance="outline">
+                  <mat-form-field appearance="outline" class="custom-field">
                     <mat-label>Groupe</mat-label>
                     <input matInput formControlName="groupe" placeholder="Ex. G1">
                     <mat-error>Requis</mat-error>
                   </mat-form-field>
                 </div>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Filière</mat-label>
                   <input matInput formControlName="filiere" placeholder="Ex. Informatique">
                   <mat-error>Requis</mat-error>
@@ -76,13 +80,13 @@
               </ng-container>
 
               <ng-container *ngIf="selectedRole === 'ENSEIGNANT'">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Département</mat-label>
                   <input matInput formControlName="departement" placeholder="Ex. Informatique">
                   <mat-error>Requis</mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Grade</mat-label>
                   <input matInput formControlName="grade" placeholder="Ex. Maître de conférences">
                   <mat-error>Requis</mat-error>
@@ -90,23 +94,25 @@
               </ng-container>
 
               <ng-container *ngIf="selectedRole === 'RESPONSABLE_PFE'">
-                <mat-form-field appearance="outline">
+                <mat-form-field appearance="outline" class="custom-field">
                   <mat-label>Fonction</mat-label>
                   <input matInput formControlName="fonction" placeholder="Ex. Coordinateur PFE">
                   <mat-error>Requis</mat-error>
                 </mat-form-field>
               </ng-container>
 
-              <div class="form-row">
-                <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
-                <button mat-flat-button color="primary" matStepperNext type="button">Suivant</button>
+              <div class="step-actions">
+                <button mat-stroked-button matStepperPrevious type="button" class="action-btn secondary">Précédent</button>
+                <button mat-flat-button color="primary" matStepperNext type="button" class="action-btn">
+                  Suivant <mat-icon>arrow_forward</mat-icon>
+                </button>
               </div>
             </form>
           </mat-step>
 
           <mat-step [stepControl]="accountForm" label="Compte">
-            <form [formGroup]="accountForm" (ngSubmit)="onSubmit()">
-              <mat-form-field appearance="outline">
+            <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="step-form">
+              <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" type="email" placeholder="votre.email&#64;isty.fr">
                 <mat-icon matPrefix>email</mat-icon>
@@ -114,23 +120,23 @@
                 <mat-error *ngIf="accountForm.get('email')?.hasError('email')">Email invalide</mat-error>
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" class="custom-field">
                 <mat-label>Mot de passe</mat-label>
                 <input matInput formControlName="motDePasse" [type]="hidePassword ? 'password' : 'text'">
                 <mat-icon matPrefix>lock</mat-icon>
-                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+                <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword" tabindex="-1">
                   <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                 </button>
                 <mat-error *ngIf="accountForm.get('motDePasse')?.hasError('required')">Requis</mat-error>
                 <mat-error *ngIf="accountForm.get('motDePasse')?.hasError('minlength')">Min 6 caractères</mat-error>
               </mat-form-field>
 
-              <div class="form-row">
-                <button mat-stroked-button matStepperPrevious type="button">Précédent</button>
-                <button mat-flat-button color="primary" type="submit" class="submit-btn"
+              <div class="step-actions">
+                <button mat-stroked-button matStepperPrevious type="button" class="action-btn secondary">Précédent</button>
+                <button mat-flat-button color="primary" type="submit" class="submit-btn action-btn"
                   [disabled]="infoForm.invalid || roleForm.invalid || accountForm.invalid || loading">
                   <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-                  <span *ngIf="!loading">S'inscrire</span>
+                  <span *ngIf="!loading">S'inscrire <mat-icon>check</mat-icon></span>
                 </button>
               </div>
             </form>
@@ -139,11 +145,12 @@
         </mat-stepper>
       </mat-card-content>
 
-      <mat-card-actions align="end">
-        <span class="auth-link">Déjà un compte ?
-          <a routerLink="/login">Se connecter</a>
-        </span>
-      </mat-card-actions>
+      <mat-card-footer>
+        <p class="auth-footer">
+          Déjà un compte ?
+          <a routerLink="/login" class="link-primary">Se connecter</a>
+        </p>
+      </mat-card-footer>
     </mat-card>
   </div>
 </div>

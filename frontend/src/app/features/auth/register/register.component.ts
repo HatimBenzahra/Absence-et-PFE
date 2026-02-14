@@ -9,9 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 import { Role } from '../../../core/models/user.model';
 
 @Component({
@@ -28,7 +28,6 @@ import { Role } from '../../../core/models/user.model';
     MatIconModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule,
     MatStepperModule,
   ],
   templateUrl: './register.component.html',
@@ -52,7 +51,7 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private notify: NotificationService,
     private cdr: ChangeDetectorRef
   ) {
     this.infoForm = this.fb.group({
@@ -110,13 +109,13 @@ export class RegisterComponent {
 
     this.authService.register(data).subscribe({
       next: () => {
-        this.snackBar.open('Inscription réussie !', 'Fermer', { duration: 3000 });
+        this.notify.success('Inscription réussie !');
         this.router.navigate(['/login']);
       },
       error: () => {
         this.loading = false;
         this.cdr.markForCheck();
-        this.snackBar.open("Erreur lors de l'inscription", 'Fermer', { duration: 5000 });
+        this.notify.error("Erreur lors de l'inscription");
       },
     });
   }
