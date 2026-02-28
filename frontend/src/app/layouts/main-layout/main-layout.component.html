@@ -1,0 +1,60 @@
+<mat-sidenav-container class="layout-shell">
+  <mat-sidenav
+    #sidenav
+    class="layout-sidenav"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile"
+  >
+    <div class="sidenav-content-wrapper">
+      <div class="brand-block">
+        <img src="assets/logo-isty.png" alt="ISTY" class="brand-logo" />
+        <p class="brand-subtitle">Absences & PFE</p>
+      </div>
+
+      <nav class="nav-groups">
+        <section class="nav-section" *ngFor="let section of navSections">
+          <h3>{{ section.title }}</h3>
+
+          <a
+            *ngFor="let item of section.items"
+            [routerLink]="item.route"
+            routerLinkActive="active-link"
+            class="nav-link"
+          >
+            <mat-icon>{{ item.icon }}</mat-icon>
+            <span>{{ item.label }}</span>
+          </a>
+        </section>
+      </nav>
+      <button mat-flat-button type="button" class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Deconnexion
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="layout-content">
+    <header class="topbar">
+      <button mat-icon-button type="button" class="menu-btn" (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+
+      <div class="title-block">
+        <h1>Espace {{ getRoleLabel() }}</h1>
+      </div>
+
+      <div class="user-block">
+        <div class="avatar">{{ getInitials() }}</div>
+        <div class="identity">
+          <p class="name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</p>
+          <p class="role">{{ getRoleLabel() }}</p>
+        </div>
+
+      </div>
+    </header>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
