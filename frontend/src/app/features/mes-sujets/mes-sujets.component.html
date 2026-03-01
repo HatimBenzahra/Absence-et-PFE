@@ -1,0 +1,164 @@
+<div class="mes-sujets-container">
+
+  <!-- ─── Section 1 : Proposer un nouveau sujet ─────────────────────────── -->
+  <mat-card class="section-card propose-card">
+    <div class="card-header">
+      <div class="header-content">
+        <h2 class="section-title">Proposer un nouveau sujet</h2>
+        <p class="section-subtitle">Renseignez les informations de votre sujet PFE pour le soumettre à validation</p>
+      </div>
+      <div class="header-accent-bar"></div>
+    </div>
+
+    <mat-card-content class="card-body">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="propose-form">
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titre du sujet</mat-label>
+          <input
+            matInput
+            formControlName="titre"
+            placeholder="Ex : Système de gestion des absences avec QR Code…"
+          />
+          @if (form.get('titre')?.touched && form.get('titre')?.hasError('required')) {
+            <mat-error>Le titre est obligatoire</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            rows="5"
+            placeholder="Décrivez votre sujet, les objectifs, les technologies attendues…"
+          ></textarea>
+          @if (form.get('description')?.touched && form.get('description')?.hasError('required')) {
+            <mat-error>La description est obligatoire</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Mots-clés (optionnel)</mat-label>
+          <input
+            matInput
+            formControlName="motsCles"
+            placeholder="Ex : Angular, Spring Boot, REST API"
+          />
+          <mat-hint>Séparez les mots-clés par des virgules</mat-hint>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button
+            mat-flat-button
+            type="submit"
+            class="submit-btn"
+            [disabled]="form.invalid || submitting"
+          >
+            @if (!submitting) {
+              <span>Proposer le sujet</span>
+            } @else {
+              <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
+            }
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- ─── Section 2 : Mes sujets proposés ──────────────────────────────── -->
+  <mat-card class="section-card list-card">
+    <div class="card-header">
+      <div class="header-content">
+        <h2 class="section-title">Mes sujets proposés</h2>
+        <p class="section-subtitle">Suivez l'état de vos propositions de sujets PFE</p>
+      </div>
+      @if (!loading) {
+        <div class="header-badge">
+          <span class="badge-count">{{ sujets.length }}</span>
+          <span class="badge-label">sujet(s)</span>
+        </div>
+      }
+    </div>
+
+    <mat-card-content class="card-body">
+
+      <!-- Loading state -->
+      @if (loading) {
+        <div class="loading-wrapper">
+          <mat-spinner diameter="48" color="accent"></mat-spinner>
+          <p class="loading-text">Chargement de vos sujets…</p>
+        </div>
+      }
+
+      <!-- Empty state -->
+      @if (!loading && sujets.length === 0) {
+        <div class="empty-state">
+          <div class="empty-icon">📋</div>
+          <p class="empty-message">Vous n'avez pas encore proposé de sujet</p>
+          <p class="empty-hint">Utilisez le formulaire ci-dessus pour soumettre votre premier sujet PFE.</p>
+        </div>
+      }
+
+      <!-- Table -->
+      @if (!loading && sujets.length > 0) {
+        <div class="table-wrapper">
+          <table mat-table [dataSource]="sujets" class="sujets-table">
+
+            <!-- Titre -->
+            <ng-container matColumnDef="titre">
+              <th mat-header-cell *matHeaderCellDef>Titre</th>
+              <td mat-cell *matCellDef="let sujet" class="titre-cell">{{ sujet.titre }}</td>
+            </ng-container>
+
+            <!-- Description -->
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let sujet" class="description-cell">
+                {{ truncate(sujet.description) }}
+              </td>
+            </ng-container>
+
+            <!-- Mots-Clés -->
+            <ng-container matColumnDef="motsCles">
+              <th mat-header-cell *matHeaderCellDef>Mots-Clés</th>
+              <td mat-cell *matCellDef="let sujet" class="mots-cles-cell">
+                <mat-chip-set>
+                  <mat-chip
+                    *ngFor="let mot of motsClesArray(sujet.motsCles)"
+                    class="keyword-chip"
+                    [disableRipple]="true"
+                  >{{ mot }}</mat-chip>
+                </mat-chip-set>
+              </td>
+            </ng-container>
+
+            <!-- Statut -->
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let sujet">
+                <span class="statut-chip" [ngClass]="statutClass(sujet.statut)">
+                  {{ statutLabel(sujet.statut) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Date Création -->
+            <ng-container matColumnDef="dateCreation">
+              <th mat-header-cell *matHeaderCellDef>Date de création</th>
+              <td mat-cell *matCellDef="let sujet" class="date-cell">
+                {{ sujet.dateCreation | date:'dd/MM/yyyy' }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+          </table>
+        </div>
+      }
+
+    </mat-card-content>
+  </mat-card>
+
+</div>

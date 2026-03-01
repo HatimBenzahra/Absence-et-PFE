@@ -1,12 +1,12 @@
 export interface Seance {
   id: number;
   matiere: string;
-  type: TypeSeance;
-  dateDebut: Date;
-  dateFin: Date;
+  typeSeance: TypeSeance;
+  dateHeureDebut: string;
+  dateHeureFin: string;
+  groupe: string;
   salle: string;
   enseignantNom: string;
-  qrCodeToken?: string;
 }
 
 export enum TypeSeance {
@@ -18,9 +18,9 @@ export enum TypeSeance {
 
 export interface SeanceCreate {
   matiere: string;
-  type: TypeSeance;
-  dateDebut: string; // ISO string
-  dateFin: string; // ISO string
-  salle: string;
-  groupeId?: number;
+  typeSeance: TypeSeance;
+  dateHeureDebut: string;
+  dateHeureFin: string;
+  groupe?: string;
+  salle?: string;
 }

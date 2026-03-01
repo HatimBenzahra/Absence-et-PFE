@@ -1,0 +1,127 @@
+<div class="exports-page">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-icon">
+      <mat-icon>download_for_offline</mat-icon>
+    </div>
+    <div class="header-text">
+      <h1>Exports</h1>
+      <p>Téléchargez les données de suivi des présences au format de votre choix.</p>
+    </div>
+  </header>
+
+  <!-- Export Cards Grid -->
+  <div class="cards-grid">
+
+    <!-- CSV Export Card -->
+    <mat-card class="export-card export-card--csv">
+      <div class="card-accent card-accent--csv"></div>
+
+      <div class="card-header">
+        <div class="card-icon card-icon--csv">
+          <mat-icon>table_chart</mat-icon>
+        </div>
+        <div>
+          <h2 class="card-title">Export CSV</h2>
+          <p class="card-subtitle">Tableur compatible Excel &amp; Calc</p>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Exportez les données de présences au format CSV, idéal pour une analyse
+        dans un tableur ou un outil de traitement de données.
+      </p>
+
+      <div class="card-format-badge">
+        <mat-icon>insert_drive_file</mat-icon>
+        <span>.csv</span>
+      </div>
+
+      <mat-form-field appearance="outline" class="group-field">
+        <mat-label>Groupe (optionnel)</mat-label>
+        <mat-icon matPrefix>group</mat-icon>
+        <input
+          matInput
+          [(ngModel)]="csvGroupe"
+          placeholder="ex: G1, M1..."
+          [disabled]="csvLoading"
+        />
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        class="download-btn download-btn--csv"
+        [disabled]="csvLoading"
+        (click)="downloadCSV()"
+      >
+        <span *ngIf="!csvLoading" class="btn-content">
+          <mat-icon>download</mat-icon>
+          Télécharger CSV
+        </span>
+        <span *ngIf="csvLoading" class="btn-content">
+          <mat-spinner diameter="18"></mat-spinner>
+          Génération en cours…
+        </span>
+      </button>
+    </mat-card>
+
+    <!-- PDF Export Card -->
+    <mat-card class="export-card export-card--pdf">
+      <div class="card-accent card-accent--pdf"></div>
+
+      <div class="card-header">
+        <div class="card-icon card-icon--pdf">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </div>
+        <div>
+          <h2 class="card-title">Export PDF</h2>
+          <p class="card-subtitle">Rapport imprimable et partageable</p>
+        </div>
+      </div>
+
+      <p class="card-description">
+        Générez un rapport PDF des présences, prêt à être imprimé ou transmis
+        à votre établissement ou aux parties prenantes.
+      </p>
+
+      <div class="card-format-badge card-format-badge--pdf">
+        <mat-icon>picture_as_pdf</mat-icon>
+        <span>.pdf</span>
+      </div>
+
+      <mat-form-field appearance="outline" class="group-field">
+        <mat-label>Groupe (optionnel)</mat-label>
+        <mat-icon matPrefix>group</mat-icon>
+        <input
+          matInput
+          [(ngModel)]="pdfGroupe"
+          placeholder="ex: G1, M1..."
+          [disabled]="pdfLoading"
+        />
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        class="download-btn download-btn--pdf"
+        [disabled]="pdfLoading"
+        (click)="downloadPDF()"
+      >
+        <span *ngIf="!pdfLoading" class="btn-content">
+          <mat-icon>download</mat-icon>
+          Télécharger PDF
+        </span>
+        <span *ngIf="pdfLoading" class="btn-content">
+          <mat-spinner diameter="18"></mat-spinner>
+          Génération en cours…
+        </span>
+      </button>
+    </mat-card>
+
+  </div>
+
+  <!-- Info Footer -->
+  <div class="info-footer">
+    <mat-icon>info_outline</mat-icon>
+    <p>Les données exportées incluent l'ensemble des présences enregistrées. Filtrez par groupe pour un export ciblé.</p>
+  </div>
+</div>

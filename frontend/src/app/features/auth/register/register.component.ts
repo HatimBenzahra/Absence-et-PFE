@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -35,6 +35,7 @@ import { Role } from '../../../core/models/user.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RegisterComponent {
+  private cdr = inject(ChangeDetectorRef);
   infoForm: FormGroup;
   roleForm: FormGroup;
   accountForm: FormGroup;
@@ -52,7 +53,6 @@ export class RegisterComponent {
     private authService: AuthService,
     private router: Router,
     private notify: NotificationService,
-    private cdr: ChangeDetectorRef
   ) {
     this.infoForm = this.fb.group({
       nom: ['', Validators.required],
@@ -111,6 +111,7 @@ export class RegisterComponent {
       next: () => {
         this.notify.success('Inscription réussie !');
         this.router.navigate(['/login']);
+        this.cdr.markForCheck();
       },
       error: () => {
         this.loading = false;

@@ -1,0 +1,110 @@
+<div class="scanner-page">
+
+  <div class="page-header">
+    <div class="header-icon">
+      <span class="qr-icon">&#9638;</span>
+    </div>
+    <h1 class="page-title">Pointage QR</h1>
+    <p class="page-subtitle">Saisissez le code QR fourni par votre enseignant pour enregistrer votre présence.</p>
+  </div>
+
+  <mat-card class="scanner-card">
+    <mat-card-header>
+      <mat-card-title>Code QR de séance</mat-card-title>
+      <mat-card-subtitle>Entrez le token affiché en salle</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="submit()" class="scanner-form">
+
+        <mat-form-field appearance="outline" class="token-field">
+          <mat-label>Token QR</mat-label>
+          <input
+            matInput
+            formControlName="tokenQR"
+            placeholder="Ex : ABC-2026-XY9Z"
+            autocomplete="off"
+            spellcheck="false"
+            [disabled]="isLoading"
+          />
+          @if (tokenQR?.hasError('required') && tokenQR?.touched) {
+            <mat-error>Le token QR est obligatoire</mat-error>
+          }
+          @if (tokenQR?.hasError('minlength') && tokenQR?.touched) {
+            <mat-error>Token trop court (min. 4 caractères)</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          type="submit"
+          class="pointer-btn"
+          [disabled]="form.invalid || isLoading"
+        >
+          @if (isLoading) {
+            <span class="btn-inner">
+              <span class="spinner"></span>
+              Enregistrement…
+            </span>
+          } @else {
+            <span class="btn-inner">
+              <span class="btn-icon">&#10003;</span>
+              Pointer ma présence
+            </span>
+          }
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  @if (result) {
+    <mat-card class="result-card">
+      <mat-card-header>
+        <mat-card-title class="result-title">Présence enregistrée</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="result-grid">
+
+          <div class="result-row">
+            <span class="result-label">Étudiant</span>
+            <span class="result-value">{{ result.etudiantNom }}</span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-label">Numéro</span>
+            <span class="result-value mono">{{ result.etudiantNumero }}</span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-label">Statut</span>
+            <span class="result-value">
+              <span class="statut-badge" [class]="'statut-' + result.statut.toLowerCase()">
+                {{ statutLabel(result.statut) }}
+              </span>
+            </span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-label">Mode</span>
+            <span class="result-value">{{ result.modeSaisie }}</span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-label">Horodatage</span>
+            <span class="result-value mono">{{ formatDate(result.horodatage) }}</span>
+          </div>
+
+          @if (result.aJustificatif) {
+            <div class="result-row">
+              <span class="result-label">Justificatif</span>
+              <span class="result-value">Oui</span>
+            </div>
+          }
+
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+
+</div>

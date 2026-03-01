@@ -1,9 +1,11 @@
 export interface Presence {
   id: number;
-  seanceId: number;
-  etudiantId: number;
+  etudiantNom: string;
+  etudiantNumero: string;
   statut: StatutPresence;
-  datePointage?: Date;
+  modeSaisie: ModeSaisie;
+  horodatage: string;
+  aJustificatif: boolean;
 }
 
 export enum StatutPresence {
@@ -13,8 +15,16 @@ export enum StatutPresence {
   EXCUSE = 'EXCUSE'
 }
 
-export interface PointageRequest {
-  qrToken: string;
-  latitude?: number;
-  longitude?: number;
+export enum ModeSaisie {
+  QR = 'QR',
+  MANUEL = 'MANUEL'
+}
+
+export interface PointageQRRequest {
+  tokenQR: string;
+}
+
+export interface PointageManuelRequest {
+  etudiantId: number;
+  statut: StatutPresence;
 }

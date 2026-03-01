@@ -1,0 +1,202 @@
+<div class="mon-pfe-page">
+
+  <!-- Page header -->
+  <header class="page-header">
+    <div class="page-header__icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+        <polyline points="14,2 14,8 20,8"/>
+        <line x1="16" y1="13" x2="8" y2="13"/>
+        <line x1="16" y1="17" x2="8" y2="17"/>
+        <polyline points="10,9 9,9 8,9"/>
+      </svg>
+    </div>
+    <div>
+      <h1 class="page-header__title">Mon PFE</h1>
+      <p class="page-header__subtitle">Vue globale de votre affectation et livrables</p>
+    </div>
+  </header>
+
+  <!-- Loading state -->
+  <div class="loading-state" *ngIf="loadingAffectation">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Chargement de votre affectation…</p>
+  </div>
+
+  <!-- Empty state: no affectation -->
+  <div class="empty-state" *ngIf="!loadingAffectation && !affectation">
+    <div class="empty-state__icon">
+      <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <h2>Aucune affectation</h2>
+    <p>Vous n'avez pas encore été affecté à un PFE.<br>Contactez votre responsable PFE pour plus d'informations.</p>
+  </div>
+
+  <!-- Affectation content -->
+  <ng-container *ngIf="!loadingAffectation && affectation">
+
+    <!-- Affectation card -->
+    <mat-card class="affectation-card">
+      <div class="affectation-card__header">
+        <div class="affectation-card__badge">PFE</div>
+        <span class="chip" [ngClass]="statutClass(affectation.statut)">
+          {{ statutLabel(affectation.statut) }}
+        </span>
+      </div>
+
+      <h2 class="affectation-card__title">{{ affectation.sujetTitre }}</h2>
+
+      <div class="affectation-card__meta">
+        <div class="meta-item">
+          <span class="meta-item__label">Encadrant</span>
+          <span class="meta-item__value">{{ affectation.encadrantNom }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-item__label">Étudiant</span>
+          <span class="meta-item__value">{{ affectation.etudiantNom }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-item__label">Date d'affectation</span>
+          <span class="meta-item__value">{{ formatDate(affectation.dateAffectation) }}</span>
+        </div>
+      </div>
+    </mat-card>
+
+    <!-- Livrables section -->
+    <section class="livrables-section">
+
+      <div class="section-header">
+        <h2 class="section-header__title">Livrables</h2>
+        <span class="section-header__count" *ngIf="livrables.length > 0">{{ livrables.length }}</span>
+      </div>
+
+      <!-- Livrables loading -->
+      <div class="loading-state loading-state--sm" *ngIf="loadingLivrables">
+        <mat-spinner diameter="28"></mat-spinner>
+        <p>Chargement des livrables…</p>
+      </div>
+
+      <!-- Livrables table -->
+      <mat-card class="table-card" *ngIf="!loadingLivrables && livrables.length > 0">
+        <table mat-table [dataSource]="livrables" class="livrables-table">
+
+          <!-- Type column -->
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Type</th>
+            <td mat-cell *matCellDef="let livrable">
+              <span class="type-badge">{{ typeLivrableLabel(livrable.type) }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Titre column -->
+          <ng-container matColumnDef="titre">
+            <th mat-header-cell *matHeaderCellDef>Titre</th>
+            <td mat-cell *matCellDef="let livrable">
+              <span class="cell-text">{{ livrable.titre || '—' }}</span>
+            </td>
+          </ng-container>
+
+          <!-- URL column -->
+          <ng-container matColumnDef="urlFichier">
+            <th mat-header-cell *matHeaderCellDef>Lien</th>
+            <td mat-cell *matCellDef="let livrable">
+              <a
+                [href]="livrable.urlFichier"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="livrable-link"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                  <polyline points="15,3 21,3 21,9"/>
+                  <line x1="10" y1="14" x2="21" y2="3"/>
+                </svg>
+                Ouvrir
+              </a>
+            </td>
+          </ng-container>
+
+          <!-- Date dépôt column -->
+          <ng-container matColumnDef="dateDepot">
+            <th mat-header-cell *matHeaderCellDef>Date de dépôt</th>
+            <td mat-cell *matCellDef="let livrable">
+              <span class="cell-text cell-text--muted">{{ formatDate(livrable.dateDepot) }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card>
+
+      <!-- Empty livrables -->
+      <div class="livrables-empty" *ngIf="!loadingLivrables && livrables.length === 0">
+        <p>Aucun livrable déposé pour l'instant.</p>
+      </div>
+
+      <!-- Submit livrable form -->
+      <mat-card class="submit-card">
+        <div class="submit-card__header">
+          <h3 class="submit-card__title">Déposer un livrable</h3>
+          <p class="submit-card__subtitle">Renseignez les informations de votre livrable</p>
+        </div>
+
+        <form [formGroup]="livrableForm" (ngSubmit)="onSubmit()" class="livrable-form">
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Type de livrable</mat-label>
+              <mat-select formControlName="type">
+                <mat-option *ngFor="let opt of typeLivrableOptions" [value]="opt.value">
+                  {{ opt.label }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="livrableForm.get('type')?.hasError('required')">
+                Le type est requis
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Titre (optionnel)</mat-label>
+              <input matInput formControlName="titre" placeholder="Ex: Rapport de stage v2" />
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="form-field form-field--full">
+            <mat-label>URL du fichier</mat-label>
+            <input
+              matInput
+              formControlName="urlFichier"
+              placeholder="https://drive.google.com/…"
+              type="url"
+            />
+            <mat-error *ngIf="livrableForm.get('urlFichier')?.hasError('required')">
+              L'URL est requise
+            </mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button
+              mat-flat-button
+              type="submit"
+              class="submit-btn"
+              [disabled]="livrableForm.invalid || submitting"
+            >
+              <mat-spinner diameter="18" *ngIf="submitting"></mat-spinner>
+              <span *ngIf="!submitting">Déposer le livrable</span>
+              <span *ngIf="submitting">Envoi en cours…</span>
+            </button>
+          </div>
+
+        </form>
+      </mat-card>
+
+    </section>
+
+  </ng-container>
+
+</div>

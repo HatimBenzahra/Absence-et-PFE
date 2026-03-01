@@ -1,0 +1,279 @@
+$burgundy: #6d1d4a;
+$burgundy-dark: #4a1233;
+$burgundy-mid: #8b2960;
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.12);
+$text-primary: #1e293b;
+$text-muted: #64748b;
+$border: #e2e8f0;
+$surface: #fff;
+$bg: #f8fafc;
+
+.sujets-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─── Card ─────────────────────────────────── */
+.page-card {
+  border-radius: 20px;
+  border: 1px solid $border;
+  box-shadow: 0 2px 12px rgba(109, 29, 74, 0.06);
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ─── Burgundy Header ───────────────────────── */
+.card-header {
+  background:
+    radial-gradient(circle at top right, rgba(0, 151, 196, 0.25), transparent 50%),
+    linear-gradient(135deg, $burgundy-dark 0%, $burgundy 50%, $burgundy-mid 100%);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 6px;
+  letter-spacing: -0.3px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.header-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  padding: 12px 20px;
+  min-width: 72px;
+  text-align: center;
+  backdrop-filter: blur(4px);
+}
+
+.badge-count {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.badge-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 2px;
+}
+
+/* ─── Card Body ─────────────────────────────── */
+.card-body {
+  padding: 24px;
+}
+
+/* ─── Loading ───────────────────────────────── */
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 0;
+  gap: 16px;
+}
+
+.loading-text {
+  color: $text-muted;
+  font-size: 14px;
+}
+
+/* ─── Empty State ───────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 24px;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.empty-message {
+  font-size: 18px;
+  font-weight: 600;
+  color: $text-primary;
+  margin: 0 0 8px;
+}
+
+.empty-hint {
+  font-size: 14px;
+  color: $text-muted;
+  margin: 0;
+}
+
+/* ─── Table Wrapper ─────────────────────────── */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 14px;
+  border: 1px solid $border;
+}
+
+/* ─── Table ─────────────────────────────────── */
+.sujets-table {
+  width: 100%;
+  background: $surface;
+
+  /* Header */
+  .mat-mdc-header-cell {
+    background: $bg;
+    color: $text-muted;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid $border;
+    padding: 14px 16px;
+  }
+
+  /* Rows */
+  .mat-mdc-row {
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(109, 29, 74, 0.03);
+    }
+
+    &:last-child .mat-mdc-cell {
+      border-bottom: none;
+    }
+  }
+
+  .mat-mdc-cell {
+    padding: 14px 16px;
+    border-bottom: 1px solid $border;
+    color: $text-primary;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+}
+
+/* ─── Cell Variants ─────────────────────────── */
+.titre-cell {
+  font-weight: 600;
+  min-width: 180px;
+  max-width: 240px;
+}
+
+.description-cell {
+  min-width: 200px;
+  max-width: 280px;
+  color: $text-muted;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mots-cles-cell {
+  min-width: 140px;
+
+  mat-chip-set {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+.enseignant-cell {
+  min-width: 140px;
+  white-space: nowrap;
+}
+
+.actions-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* ─── Keyword Chips ─────────────────────────── */
+::ng-deep .keyword-chip.mat-mdc-chip {
+  background: $teal-light !important;
+  color: darken(#0097c4, 15%) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  border-radius: 6px !important;
+
+  .mat-mdc-chip-action-label {
+    font-size: 11px;
+  }
+}
+
+/* ─── Statut Chip ───────────────────────────── */
+.statut-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+
+  &.chip-valide {
+    background: rgba(34, 197, 94, 0.12);
+    color: #15803d;
+  }
+
+  &.chip-en-attente {
+    background: rgba(249, 115, 22, 0.12);
+    color: #c2410c;
+  }
+
+  &.chip-refuse {
+    background: rgba(239, 68, 68, 0.12);
+    color: #b91c1c;
+  }
+}
+
+/* ─── Candidater Button ─────────────────────── */
+.candidater-btn {
+  background: $burgundy !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 0 16px !important;
+  height: 36px !important;
+  letter-spacing: 0.2px !important;
+  transition: background 0.2s ease, transform 0.1s ease !important;
+
+  &:hover {
+    background: $burgundy-dark !important;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

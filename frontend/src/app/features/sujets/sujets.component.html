@@ -1,0 +1,97 @@
+<div class="sujets-container">
+  <mat-card class="page-card">
+    <!-- Burgundy card header -->
+    <div class="card-header">
+      <div class="header-content">
+        <h1 class="page-title">Sujets PFE</h1>
+        <p class="page-subtitle">Catalogue des sujets disponibles pour candidature</p>
+      </div>
+      <div class="header-badge">
+        <span class="badge-count" *ngIf="!loading">{{ sujets.length }}</span>
+        <span class="badge-label">sujets</span>
+      </div>
+    </div>
+
+    <mat-card-content class="card-body">
+      <!-- Loading spinner -->
+      <div class="loading-wrapper" *ngIf="loading">
+        <mat-spinner diameter="48" color="accent"></mat-spinner>
+        <p class="loading-text">Chargement des sujets...</p>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="!loading && sujets.length === 0">
+        <div class="empty-icon">📋</div>
+        <p class="empty-message">Aucun sujet disponible</p>
+        <p class="empty-hint">Les sujets PFE apparaîtront ici une fois publiés.</p>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="!loading && sujets.length > 0">
+        <table mat-table [dataSource]="sujets" class="sujets-table">
+
+          <!-- Titre column -->
+          <ng-container matColumnDef="titre">
+            <th mat-header-cell *matHeaderCellDef>Titre</th>
+            <td mat-cell *matCellDef="let sujet" class="titre-cell">{{ sujet.titre }}</td>
+          </ng-container>
+
+          <!-- Description column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let sujet" class="description-cell">
+              {{ truncate(sujet.description) }}
+            </td>
+          </ng-container>
+
+          <!-- Mots-Clés column -->
+          <ng-container matColumnDef="motsCles">
+            <th mat-header-cell *matHeaderCellDef>Mots-Clés</th>
+            <td mat-cell *matCellDef="let sujet" class="mots-cles-cell">
+              <mat-chip-set>
+                <mat-chip
+                  *ngFor="let mot of motsClesArray(sujet.motsCles)"
+                  class="keyword-chip"
+                  [disableRipple]="true"
+                >{{ mot }}</mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <!-- Enseignant column -->
+          <ng-container matColumnDef="enseignantNom">
+            <th mat-header-cell *matHeaderCellDef>Enseignant</th>
+            <td mat-cell *matCellDef="let sujet" class="enseignant-cell">{{ sujet.enseignantNom }}</td>
+          </ng-container>
+
+          <!-- Statut column -->
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let sujet">
+              <span class="statut-chip" [ngClass]="statutClass(sujet.statut)">
+                {{ statutLabel(sujet.statut) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Actions column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let sujet" class="actions-cell">
+              <button
+                mat-flat-button
+                class="candidater-btn"
+                [routerLink]="['/mes-candidatures']"
+              >
+                Candidater
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

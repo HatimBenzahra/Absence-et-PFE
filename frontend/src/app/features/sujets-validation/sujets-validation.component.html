@@ -1,0 +1,107 @@
+<div class="validation-container">
+  <mat-card class="page-card">
+    <!-- Burgundy card header -->
+    <div class="card-header">
+      <div class="header-content">
+        <div class="header-icon">⚖️</div>
+        <div>
+          <h1 class="page-title">Validation des Sujets PFE</h1>
+          <p class="page-subtitle">Examinez et validez les sujets soumis par les enseignants</p>
+        </div>
+      </div>
+      <div class="header-badge" *ngIf="!loading">
+        <span class="badge-count">{{ sujets.length }}</span>
+        <span class="badge-label">en attente</span>
+      </div>
+    </div>
+
+    <mat-card-content class="card-body">
+      <!-- Loading spinner -->
+      <div class="loading-wrapper" *ngIf="loading">
+        <mat-spinner diameter="48" color="accent"></mat-spinner>
+        <p class="loading-text">Chargement des sujets...</p>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="!loading && sujets.length === 0">
+        <div class="empty-icon">✅</div>
+        <p class="empty-message">Aucun sujet en attente de validation</p>
+        <p class="empty-hint">Tous les sujets soumis ont été traités. Revenez plus tard.</p>
+      </div>
+
+      <!-- Table -->
+      <div class="table-wrapper" *ngIf="!loading && sujets.length > 0">
+        <table mat-table [dataSource]="sujets" class="validation-table">
+
+          <!-- Titre column -->
+          <ng-container matColumnDef="titre">
+            <th mat-header-cell *matHeaderCellDef>Titre</th>
+            <td mat-cell *matCellDef="let sujet" class="titre-cell">{{ sujet.titre }}</td>
+          </ng-container>
+
+          <!-- Description column -->
+          <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef>Description</th>
+            <td mat-cell *matCellDef="let sujet" class="description-cell">
+              {{ truncate(sujet.description) }}
+            </td>
+          </ng-container>
+
+          <!-- Mots-Clés column -->
+          <ng-container matColumnDef="motsCles">
+            <th mat-header-cell *matHeaderCellDef>Mots-Clés</th>
+            <td mat-cell *matCellDef="let sujet" class="mots-cles-cell">
+              <mat-chip-set>
+                <mat-chip
+                  *ngFor="let mot of motsClesArray(sujet.motsCles)"
+                  class="keyword-chip"
+                  [disableRipple]="true"
+                >{{ mot }}</mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
+
+          <!-- Enseignant column -->
+          <ng-container matColumnDef="enseignantNom">
+            <th mat-header-cell *matHeaderCellDef>Enseignant</th>
+            <td mat-cell *matCellDef="let sujet" class="enseignant-cell">{{ sujet.enseignantNom }}</td>
+          </ng-container>
+
+          <!-- Date Création column -->
+          <ng-container matColumnDef="dateCreation">
+            <th mat-header-cell *matHeaderCellDef>Date Création</th>
+            <td mat-cell *matCellDef="let sujet" class="date-cell">
+              {{ sujet.dateCreation | date:'dd/MM/yyyy' }}
+            </td>
+          </ng-container>
+
+          <!-- Actions column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let sujet" class="actions-cell">
+              <button
+                mat-flat-button
+                class="btn-valider"
+                [disabled]="isActionLoading(sujet.id)"
+                (click)="valider(sujet)"
+              >
+                Valider
+              </button>
+              <button
+                mat-flat-button
+                class="btn-refuser"
+                [disabled]="isActionLoading(sujet.id)"
+                (click)="refuser(sujet)"
+              >
+                Refuser
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

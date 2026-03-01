@@ -1,0 +1,210 @@
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header__icon">
+      <mat-icon>assignment_ind</mat-icon>
+    </div>
+    <div>
+      <h1 class="page-header__title">Affectations PFE</h1>
+      <p class="page-header__subtitle">Gestion manuelle et automatique des affectations étudiant–sujet–encadrant</p>
+    </div>
+  </header>
+
+  <!-- Section 1: Manual Assignment Form -->
+  <mat-card class="section-card form-card">
+    <div class="section-card__header">
+      <mat-icon>person_add</mat-icon>
+      <h2>Affectation manuelle</h2>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="affectation-form">
+      <div class="form-row">
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ID Étudiant</mat-label>
+          <mat-icon matPrefix>school</mat-icon>
+          <input
+            matInput
+            type="number"
+            formControlName="etudiantId"
+            placeholder="ex: 12"
+            min="1"
+          />
+          <mat-error *ngIf="form.get('etudiantId')?.hasError('required')">
+            L'identifiant de l'étudiant est requis.
+          </mat-error>
+          <mat-error *ngIf="form.get('etudiantId')?.hasError('min')">
+            L'identifiant doit être supérieur à 0.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ID Sujet</mat-label>
+          <mat-icon matPrefix>description</mat-icon>
+          <input
+            matInput
+            type="number"
+            formControlName="sujetId"
+            placeholder="ex: 7"
+            min="1"
+          />
+          <mat-error *ngIf="form.get('sujetId')?.hasError('required')">
+            L'identifiant du sujet est requis.
+          </mat-error>
+          <mat-error *ngIf="form.get('sujetId')?.hasError('min')">
+            L'identifiant doit être supérieur à 0.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field form-field--optional">
+          <mat-label>ID Encadrant <span class="optional-badge">optionnel</span></mat-label>
+          <mat-icon matPrefix>person</mat-icon>
+          <input
+            matInput
+            type="number"
+            formControlName="encadrantId"
+            placeholder="ex: 3"
+            min="1"
+          />
+          <mat-error *ngIf="form.get('encadrantId')?.hasError('min')">
+            L'identifiant doit être supérieur à 0.
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="form-actions">
+        <button
+          mat-flat-button
+          type="submit"
+          class="submit-btn"
+          [disabled]="form.invalid || isSubmitting"
+        >
+          <mat-icon>link</mat-icon>
+          {{ isSubmitting ? 'Affectation…' : 'Affecter manuellement' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Section 2: Auto-assign -->
+  <mat-card class="section-card auto-card">
+    <div class="section-card__header">
+      <mat-icon>auto_awesome</mat-icon>
+      <h2>Affectation automatique</h2>
+    </div>
+    <p class="auto-description">
+      Lance l'algorithme d'affectation automatique. Les étudiants non affectés seront répartis
+      sur les sujets disponibles selon leurs candidatures et préférences.
+    </p>
+    <div class="auto-actions">
+      <button
+        mat-flat-button
+        class="auto-btn"
+        (click)="onAutoAffectation()"
+        [disabled]="isAutoRunning"
+      >
+        <mat-progress-spinner
+          *ngIf="isAutoRunning"
+          diameter="18"
+          strokeWidth="2"
+          mode="indeterminate"
+          class="auto-spinner"
+        ></mat-progress-spinner>
+        <mat-icon *ngIf="!isAutoRunning">play_circle</mat-icon>
+        {{ isAutoRunning ? 'Traitement en cours…' : 'Affectation Automatique' }}
+      </button>
+    </div>
+  </mat-card>
+
+  <!-- Section 3: Affectations Table -->
+  <mat-card class="section-card table-card">
+    <div class="section-card__header">
+      <mat-icon>list_alt</mat-icon>
+      <h2>Affectations en cours</h2>
+    </div>
+
+    <div class="table-container" *ngIf="!isLoading; else loadingTpl">
+
+      <ng-container *ngIf="affectations.length > 0; else emptyTpl">
+        <table mat-table [dataSource]="affectations" class="affectations-table">
+
+          <!-- Étudiant -->
+          <ng-container matColumnDef="etudiantNom">
+            <th mat-header-cell *matHeaderCellDef>Étudiant</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="cell-with-icon">
+                <span class="avatar-initials">{{ getInitials(row.etudiantNom) }}</span>
+                <span class="cell-primary">{{ row.etudiantNom }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Sujet -->
+          <ng-container matColumnDef="sujetTitre">
+            <th mat-header-cell *matHeaderCellDef>Sujet</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="sujet-title">{{ row.sujetTitre }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Encadrant -->
+          <ng-container matColumnDef="encadrantNom">
+            <th mat-header-cell *matHeaderCellDef>Encadrant</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="cell-muted" *ngIf="row.encadrantNom; else noEncadrant">
+                {{ row.encadrantNom }}
+              </span>
+              <ng-template #noEncadrant>
+                <span class="cell-empty">—</span>
+              </ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Statut -->
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="status-chip" [ngClass]="statutClass(row.statut)">
+                {{ statutLabel(row.statut) }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Date -->
+          <ng-container matColumnDef="dateAffectation">
+            <th mat-header-cell *matHeaderCellDef>Date</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="date-text">{{ row.dateAffectation | date:'dd/MM/yyyy' }}</span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+      </ng-container>
+
+      <!-- Empty state -->
+      <ng-template #emptyTpl>
+        <div class="empty-state">
+          <mat-icon>inbox</mat-icon>
+          <p>Aucune affectation pour le moment.</p>
+          <span>Utilisez le formulaire ci-dessus ou lancez l'affectation automatique.</span>
+        </div>
+      </ng-template>
+
+    </div>
+
+    <!-- Loading state -->
+    <ng-template #loadingTpl>
+      <div class="loading-state">
+        <mat-progress-spinner diameter="40" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+        <p>Chargement des affectations…</p>
+      </div>
+    </ng-template>
+
+  </mat-card>
+
+</div>

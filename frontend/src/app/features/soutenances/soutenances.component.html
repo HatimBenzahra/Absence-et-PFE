@@ -1,0 +1,200 @@
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header__icon">
+      <mat-icon>event_available</mat-icon>
+    </div>
+    <div>
+      <h1 class="page-header__title">Soutenances PFE</h1>
+      <p class="page-header__subtitle">Planification et suivi des soutenances de fin d'études</p>
+    </div>
+  </header>
+
+  <!-- Section 1: Schedule Form -->
+  <mat-card class="section-card form-card">
+    <div class="section-card__header">
+      <mat-icon>add_circle_outline</mat-icon>
+      <h2>Planifier une soutenance</h2>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="soutenance-form">
+      <div class="form-row">
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ID Affectation</mat-label>
+          <mat-icon matPrefix>link</mat-icon>
+          <input
+            matInput
+            type="number"
+            formControlName="affectationId"
+            placeholder="ex: 5"
+            min="1"
+          />
+          <mat-error *ngIf="form.get('affectationId')?.hasError('required')">
+            L'identifiant d'affectation est requis.
+          </mat-error>
+          <mat-error *ngIf="form.get('affectationId')?.hasError('min')">
+            L'identifiant doit être supérieur à 0.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Date &amp; heure de soutenance</mat-label>
+          <mat-icon matPrefix>schedule</mat-icon>
+          <input
+            matInput
+            type="datetime-local"
+            formControlName="dateSoutenance"
+          />
+          <mat-error *ngIf="form.get('dateSoutenance')?.hasError('required')">
+            La date de soutenance est requise.
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="form-row">
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Lieu <span class="optional-badge">optionnel</span></mat-label>
+          <mat-icon matPrefix>place</mat-icon>
+          <input
+            matInput
+            type="text"
+            formControlName="lieu"
+            placeholder="ex: Salle A201"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Jury <span class="optional-badge">optionnel</span></mat-label>
+          <mat-icon matPrefix>people</mat-icon>
+          <input
+            matInput
+            type="text"
+            formControlName="jury"
+            placeholder="ex: Pr. Martin, Dr. Dupont"
+          />
+          <mat-hint>Séparez les noms par des virgules</mat-hint>
+        </mat-form-field>
+
+      </div>
+
+      <div class="form-actions">
+        <button
+          mat-flat-button
+          type="submit"
+          class="submit-btn"
+          [disabled]="form.invalid || isSubmitting"
+        >
+          <mat-icon>event_available</mat-icon>
+          {{ isSubmitting ? 'Planification…' : 'Planifier la soutenance' }}
+        </button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Section 2: Soutenances Table -->
+  <mat-card class="section-card table-card">
+    <div class="section-card__header">
+      <mat-icon>list_alt</mat-icon>
+      <h2>Soutenances planifiées</h2>
+    </div>
+
+    <div class="table-container" *ngIf="!isLoading; else loadingTpl">
+
+      <ng-container *ngIf="soutenances.length > 0; else emptyTpl">
+        <table mat-table [dataSource]="soutenances" class="soutenances-table">
+
+          <!-- Étudiant -->
+          <ng-container matColumnDef="etudiantNom">
+            <th mat-header-cell *matHeaderCellDef>Étudiant</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="cell-with-icon">
+                <span class="avatar-initials">{{ getInitials(row.etudiantNom) }}</span>
+                <span class="cell-primary">{{ row.etudiantNom }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Sujet -->
+          <ng-container matColumnDef="sujetTitre">
+            <th mat-header-cell *matHeaderCellDef>Sujet</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="sujet-title">{{ row.sujetTitre }}</span>
+            </td>
+          </ng-container>
+
+          <!-- Date Soutenance -->
+          <ng-container matColumnDef="dateSoutenance">
+            <th mat-header-cell *matHeaderCellDef>Date Soutenance</th>
+            <td mat-cell *matCellDef="let row">
+              <div class="date-cell">
+                <span class="date-day">{{ row.dateSoutenance | date:'dd/MM/yyyy' }}</span>
+                <span class="date-time">{{ row.dateSoutenance | date:'HH:mm' }}</span>
+              </div>
+            </td>
+          </ng-container>
+
+          <!-- Lieu -->
+          <ng-container matColumnDef="lieu">
+            <th mat-header-cell *matHeaderCellDef>Lieu</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="cell-muted" *ngIf="row.lieu; else noLieu">{{ row.lieu }}</span>
+              <ng-template #noLieu><span class="cell-empty">—</span></ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Jury -->
+          <ng-container matColumnDef="jury">
+            <th mat-header-cell *matHeaderCellDef>Jury</th>
+            <td mat-cell *matCellDef="let row">
+              <span class="jury-text" *ngIf="row.jury; else noJury">{{ row.jury }}</span>
+              <ng-template #noJury><span class="cell-empty">—</span></ng-template>
+            </td>
+          </ng-container>
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let row">
+              <button
+                mat-icon-button
+                class="delete-btn"
+                (click)="onDelete(row.id)"
+                title="Supprimer"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+      </ng-container>
+
+      <!-- Empty state -->
+      <ng-template #emptyTpl>
+        <div class="empty-state">
+          <mat-icon>event_busy</mat-icon>
+          <p>Aucune soutenance planifiée.</p>
+          <span>Utilisez le formulaire ci-dessus pour planifier une soutenance.</span>
+        </div>
+      </ng-template>
+
+    </div>
+
+    <!-- Loading state -->
+    <ng-template #loadingTpl>
+      <div class="loading-state">
+        <mat-progress-spinner diameter="40" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+        <p>Chargement des soutenances…</p>
+      </div>
+    </ng-template>
+
+  </mat-card>
+
+</div>

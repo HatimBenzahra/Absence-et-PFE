@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -29,6 +29,7 @@ import { NotificationService } from '../../../shared/services/notification.servi
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  private cdr = inject(ChangeDetectorRef);
   loginForm: FormGroup;
   loading = false;
   hidePassword = true;
@@ -53,10 +54,12 @@ export class LoginComponent {
       next: () => {
         this.notify.success('Connexion réussie !');
         this.router.navigate(['/dashboard']);
+        this.cdr.markForCheck();
       },
       error: () => {
         this.loading = false;
         this.notify.error('Email ou mot de passe incorrect');
+        this.cdr.markForCheck();
       },
     });
   }

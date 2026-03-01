@@ -1,0 +1,213 @@
+<div class="statistiques-container">
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="header-content">
+      <div class="header-icon-wrap">
+        <mat-icon>query_stats</mat-icon>
+      </div>
+      <div class="header-text">
+        <h1>Statistiques de présence</h1>
+        <p>Analysez les données de présence par étudiant, groupe ou matière</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Search Tabs -->
+  <mat-card class="search-card">
+    <mat-tab-group class="search-tabs" (selectedIndexChange)="onTabChange()">
+
+      <!-- Par Étudiant -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">person</mat-icon>
+          Par Étudiant
+        </ng-template>
+        <div class="tab-content">
+          <form [formGroup]="etudiantForm" (ngSubmit)="searchByEtudiant()" class="search-form">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Numéro étudiant</mat-label>
+              <input matInput type="number" formControlName="etudiantId" placeholder="Ex: 12345" />
+              <mat-icon matSuffix>badge</mat-icon>
+              @if (etudiantForm.get('etudiantId')?.touched && etudiantForm.get('etudiantId')?.hasError('required')) {
+                <mat-error>Le numéro étudiant est requis</mat-error>
+              }
+            </mat-form-field>
+            <button mat-flat-button type="submit" [disabled]="loading" class="search-btn">
+              @if (loading) {
+                <mat-spinner diameter="18"></mat-spinner>
+              } @else {
+                <mat-icon>search</mat-icon>
+              }
+              Rechercher
+            </button>
+          </form>
+        </div>
+      </mat-tab>
+
+      <!-- Par Groupe -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">groups</mat-icon>
+          Par Groupe
+        </ng-template>
+        <div class="tab-content">
+          <form [formGroup]="groupeForm" (ngSubmit)="searchByGroupe()" class="search-form">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Nom du groupe</mat-label>
+              <input matInput formControlName="groupe" placeholder="Ex: G1-INFO" />
+              <mat-icon matSuffix>groups</mat-icon>
+              @if (groupeForm.get('groupe')?.touched && groupeForm.get('groupe')?.hasError('required')) {
+                <mat-error>Le nom du groupe est requis</mat-error>
+              }
+            </mat-form-field>
+            <button mat-flat-button type="submit" [disabled]="loading" class="search-btn">
+              @if (loading) {
+                <mat-spinner diameter="18"></mat-spinner>
+              } @else {
+                <mat-icon>search</mat-icon>
+              }
+              Rechercher
+            </button>
+          </form>
+        </div>
+      </mat-tab>
+
+      <!-- Par Matière -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">menu_book</mat-icon>
+          Par Matière
+        </ng-template>
+        <div class="tab-content">
+          <form [formGroup]="matiereForm" (ngSubmit)="searchByMatiere()" class="search-form">
+            <mat-form-field appearance="outline" class="search-field">
+              <mat-label>Nom de la matière</mat-label>
+              <input matInput formControlName="matiere" placeholder="Ex: Mathématiques" />
+              <mat-icon matSuffix>menu_book</mat-icon>
+              @if (matiereForm.get('matiere')?.touched && matiereForm.get('matiere')?.hasError('required')) {
+                <mat-error>Le nom de la matière est requis</mat-error>
+              }
+            </mat-form-field>
+            <button mat-flat-button type="submit" [disabled]="loading" class="search-btn">
+              @if (loading) {
+                <mat-spinner diameter="18"></mat-spinner>
+              } @else {
+                <mat-icon>search</mat-icon>
+              }
+              Rechercher
+            </button>
+          </form>
+        </div>
+      </mat-tab>
+
+    </mat-tab-group>
+  </mat-card>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <mat-spinner diameter="48"></mat-spinner>
+      <p>Chargement des statistiques…</p>
+    </div>
+  }
+
+  <!-- Results -->
+  @if (hasSearched && stats && !loading) {
+    <!-- Stat Cards -->
+    <div class="stats-grid">
+      <mat-card class="stat-card stat-card--seances">
+        <div class="stat-icon-wrap">
+          <mat-icon>event</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stats.totalSeances }}</p>
+          <p class="stat-label">Séances totales</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card stat-card--present">
+        <div class="stat-icon-wrap">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stats.totalPresent }}</p>
+          <p class="stat-label">Présences</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card stat-card--absent">
+        <div class="stat-icon-wrap">
+          <mat-icon>cancel</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stats.totalAbsent }}</p>
+          <p class="stat-label">Absences</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card stat-card--retard">
+        <div class="stat-icon-wrap">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stats.totalRetard }}</p>
+          <p class="stat-label">Retards</p>
+        </div>
+      </mat-card>
+
+      <mat-card class="stat-card stat-card--taux">
+        <div class="stat-icon-wrap">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stats.tauxAssiduite | number: '1.1-1' }}%</p>
+          <p class="stat-label">Taux d'assiduité</p>
+        </div>
+      </mat-card>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Répartition des présences</mat-card-title>
+          <mat-card-subtitle>Distribution présent / absent / retard</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="chart-content">
+          <canvas
+            baseChart
+            [data]="pieChartData"
+            [type]="'pie'"
+            [options]="pieChartOptions"
+          ></canvas>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="chart-card">
+        <mat-card-header>
+          <mat-card-title>Taux d'assiduité</mat-card-title>
+          <mat-card-subtitle>Pourcentage de présences effectives</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="chart-content">
+          <canvas
+            baseChart
+            [data]="barChartData"
+            [type]="'bar'"
+            [options]="barChartOptions"
+          ></canvas>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!hasSearched && !loading) {
+    <div class="empty-state">
+      <div class="empty-state-icon">
+        <mat-icon>insert_chart_outlined</mat-icon>
+      </div>
+      <h3>Aucune donnée à afficher</h3>
+      <p>Sélectionnez un mode de recherche ci-dessus et lancez une requête pour visualiser les statistiques de présence.</p>
+    </div>
+  }
+</div>

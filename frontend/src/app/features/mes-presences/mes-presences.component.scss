@@ -1,0 +1,265 @@
+$burgundy: #6d1d4a;
+$teal: #0097c4;
+
+.mes-presences-page {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+// ─── Header card ───────────────────────────────────────────────────────────────
+
+.header-card {
+  background:
+    radial-gradient(circle at top right, rgba(0, 151, 196, 0.2), transparent 45%),
+    linear-gradient(135deg, #4a1233 0%, #6d1d4a 45%, #8b2960 100%);
+  border-radius: 20px;
+  color: #fff;
+  padding: 28px 32px;
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+    }
+  }
+
+  .header-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.75);
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+// ─── Loading ───────────────────────────────────────────────────────────────────
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 64px 24px;
+
+  .loading-text {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  mat-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #{$burgundy};
+  }
+}
+
+// ─── Empty state ───────────────────────────────────────────────────────────────
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 72px 24px;
+  background: #fff;
+  border-radius: 16px;
+  border: 1px dashed #e2e8f0;
+
+  .empty-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(109, 29, 74, 0.08);
+
+    mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: $burgundy;
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: #64748b;
+    max-width: 360px;
+    line-height: 1.6;
+    margin: 0;
+  }
+}
+
+// ─── Table card ────────────────────────────────────────────────────────────────
+
+.table-card {
+  border-radius: 16px !important;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06) !important;
+  overflow: hidden;
+
+  mat-card-content {
+    padding: 0 !important;
+  }
+}
+
+.presences-table {
+  width: 100%;
+
+  // Header row
+  th.mat-mdc-header-cell {
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+
+    &:first-child {
+      padding-left: 24px;
+    }
+    &:last-child {
+      padding-right: 24px;
+    }
+  }
+
+  // Data cells
+  td.mat-mdc-cell {
+    padding: 16px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #1e293b;
+    vertical-align: middle;
+
+    &:first-child {
+      padding-left: 24px;
+    }
+    &:last-child {
+      padding-right: 24px;
+      border-bottom-color: #f1f5f9;
+    }
+  }
+
+  // Alternating rows subtle bg
+  tr.mat-mdc-row:hover td.mat-mdc-cell {
+    background: #faf5f8;
+  }
+
+  // Remove last row border
+  tr.mat-mdc-row:last-child td.mat-mdc-cell {
+    border-bottom: none;
+  }
+}
+
+// ─── Date cell ─────────────────────────────────────────────────────────────────
+
+.date-value {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1e293b;
+}
+
+.time-value {
+  display: block;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+// ─── Status chip ───────────────────────────────────────────────────────────────
+
+.statut-chip {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border-radius: 999px !important;
+  height: 26px !important;
+  padding: 0 10px !important;
+  cursor: default;
+
+  // Override MDC chip text color via the CSS custom property set inline
+  .mdc-evolution-chip__text-label {
+    color: #ffffff !important;
+  }
+}
+
+// ─── Mode badge ────────────────────────────────────────────────────────────────
+
+.mode-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+
+  .mode-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &.mode-qr {
+    background: rgba(0, 151, 196, 0.1);
+    color: darken($teal, 8%);
+  }
+
+  &.mode-manuel {
+    background: rgba(109, 29, 74, 0.08);
+    color: $burgundy;
+  }
+}

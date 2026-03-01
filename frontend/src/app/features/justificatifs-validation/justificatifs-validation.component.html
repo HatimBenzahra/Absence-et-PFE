@@ -1,0 +1,127 @@
+<div class="page-wrapper">
+
+  <!-- ═══════════════════════════════════════════════
+       Justificatifs à valider
+  ══════════════════════════════════════════════════ -->
+  <mat-card class="section-card">
+    <div class="card-header">
+      <span class="card-header__icon">fact_check</span>
+      <h2 class="card-header__title">Justificatifs à valider</h2>
+    </div>
+
+    <div class="card-body">
+
+      @if (loading) {
+        <div class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Chargement…</p>
+        </div>
+      } @else if (justificatifs.length === 0) {
+        <div class="empty-state">
+          <span class="empty-state__icon">inbox</span>
+          <p class="empty-state__text">Aucun justificatif en attente.</p>
+          <p class="empty-state__sub">Tous les justificatifs ont été traités ou aucun n'a encore été soumis.</p>
+        </div>
+      } @else {
+        <div class="table-container">
+          <table mat-table [dataSource]="justificatifs" class="mat-elevation-z0 val-table">
+
+            <!-- Motif column -->
+            <ng-container matColumnDef="motif">
+              <th mat-header-cell *matHeaderCellDef>Motif</th>
+              <td mat-cell *matCellDef="let j" class="cell-motif">{{ j.motif }}</td>
+            </ng-container>
+
+            <!-- URL Fichier column -->
+            <ng-container matColumnDef="urlFichier">
+              <th mat-header-cell *matHeaderCellDef>Fichier</th>
+              <td mat-cell *matCellDef="let j" class="cell-file">
+                @if (j.urlFichier) {
+                  <a [href]="j.urlFichier" target="_blank" class="file-link">
+                    <span class="file-link__icon">open_in_new</span>
+                    Voir fichier
+                  </a>
+                } @else {
+                  <span class="cell-na">—</span>
+                }
+              </td>
+            </ng-container>
+
+            <!-- Date Dépôt column -->
+            <ng-container matColumnDef="dateDepot">
+              <th mat-header-cell *matHeaderCellDef>Date de dépôt</th>
+              <td mat-cell *matCellDef="let j">{{ j.dateDepot | date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+
+            <!-- Statut column -->
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let j">
+                <span class="statut-chip" [ngClass]="statutClass(j.statut)">
+                  {{ statutLabel(j.statut) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Commentaire column -->
+            <ng-container matColumnDef="commentaire">
+              <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+              <td mat-cell *matCellDef="let j" class="cell-comment-input">
+                <mat-form-field appearance="outline" class="comment-field" subscriptSizing="dynamic">
+                  <textarea
+                    matInput
+                    [ngModel]="getComment(j.id)"
+                    (ngModelChange)="setComment(j.id, $event)"
+                    placeholder="Commentaire optionnel…"
+                    rows="2"
+                  ></textarea>
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Actions column -->
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Actions</th>
+              <td mat-cell *matCellDef="let j" class="cell-actions">
+                <div class="action-buttons">
+                  <button
+                    mat-flat-button
+                    class="btn-accepter"
+                    [disabled]="processingId === j.id"
+                    (click)="accepter(j)"
+                  >
+                    @if (processingId === j.id && processingAction === 'accept') {
+                      <mat-spinner diameter="16" class="btn-spinner btn-spinner--light"></mat-spinner>
+                    } @else {
+                      <span class="btn-icon">check_circle</span>
+                      Accepter
+                    }
+                  </button>
+
+                  <button
+                    mat-flat-button
+                    class="btn-refuser"
+                    [disabled]="processingId === j.id"
+                    (click)="refuser(j)"
+                  >
+                    @if (processingId === j.id && processingAction === 'refuse') {
+                      <mat-spinner diameter="16" class="btn-spinner btn-spinner--light"></mat-spinner>
+                    } @else {
+                      <span class="btn-icon">cancel</span>
+                      Refuser
+                    }
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      }
+
+    </div>
+  </mat-card>
+
+</div>

@@ -1,0 +1,349 @@
+// ── Design tokens ─────────────────────────────────────────────────────────────
+$burgundy: #6d1d4a;
+$burgundy-dark: #4a1233;
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.12);
+$teal-mid: rgba(0, 151, 196, 0.18);
+$surface: #ffffff;
+$border: #e2e8f0;
+$text-primary: #1e293b;
+$text-muted: #64748b;
+$bg: #f8fafc;
+
+// ── Page wrapper ──────────────────────────────────────────────────────────────
+
+.presences-page {
+  min-height: 100%;
+  padding: 32px 24px;
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.page-header {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(109, 29, 74, 0.28);
+}
+
+.icon-sym {
+  font-size: 28px;
+  color: #fff;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: $text-muted;
+  line-height: 1.6;
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+// ── Cards ─────────────────────────────────────────────────────────────────────
+
+.selector-card,
+.table-card {
+  border-radius: 16px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+
+  mat-card-header {
+    background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
+    padding: 18px 24px;
+    margin-bottom: 0;
+
+    mat-card-title {
+      color: #fff !important;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      color: rgba(255, 255, 255, 0.72) !important;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+  }
+
+  mat-card-content {
+    padding: 24px !important;
+  }
+}
+
+// ── Séance selector ───────────────────────────────────────────────────────────
+
+.seance-field {
+  width: 100%;
+
+  ::ng-deep {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border !important;
+    }
+
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $teal !important;
+        border-width: 2px !important;
+      }
+
+      .mat-mdc-floating-label {
+        color: $teal !important;
+      }
+    }
+  }
+}
+
+// ── Loading / empty states ────────────────────────────────────────────────────
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+  color: $text-muted;
+  font-size: 14px;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 0;
+  color: $text-muted;
+
+  .empty-icon {
+    font-size: 40px;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+// ── Table wrapper ─────────────────────────────────────────────────────────────
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid $border;
+}
+
+.presence-table {
+  width: 100%;
+  background: $surface;
+
+  // Header row
+  ::ng-deep .mat-mdc-header-row {
+    background: $bg;
+  }
+
+  ::ng-deep .mat-mdc-header-cell {
+    font-size: 12px;
+    font-weight: 700;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    border-bottom: 1px solid $border;
+    padding: 12px 16px;
+  }
+
+  ::ng-deep .mat-mdc-cell {
+    font-size: 14px;
+    color: $text-primary;
+    border-bottom: 1px solid darken($border, 2%);
+    padding: 10px 16px;
+  }
+
+  ::ng-deep .mat-mdc-row {
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: rgba(0, 151, 196, 0.04);
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.student-name {
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.student-num {
+  font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+  font-size: 13px;
+  color: $text-muted;
+  letter-spacing: 0.04em;
+}
+
+// ── Statut inline select ──────────────────────────────────────────────────────
+
+.statut-select {
+  min-width: 130px;
+  font-size: 13px;
+  font-weight: 600;
+
+  ::ng-deep .mat-mdc-select-trigger {
+    padding: 4px 0;
+  }
+
+  &.statut-present ::ng-deep .mat-mdc-select-value {
+    color: #059669;
+  }
+
+  &.statut-absent ::ng-deep .mat-mdc-select-value {
+    color: #dc2626;
+  }
+
+  &.statut-retard ::ng-deep .mat-mdc-select-value {
+    color: #d97706;
+  }
+
+  &.statut-excuse ::ng-deep .mat-mdc-select-value {
+    color: darken($teal, 8%);
+  }
+}
+
+// ── Mode badge ────────────────────────────────────────────────────────────────
+
+.mode-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  &.mode-qr {
+    background: $teal-light;
+    color: darken($teal, 10%);
+  }
+
+  &.mode-manuel {
+    background: rgba(109, 29, 74, 0.1);
+    color: $burgundy;
+  }
+}
+
+// ── Actions bar ───────────────────────────────────────────────────────────────
+
+.actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 20px;
+  border-top: 1px solid $border;
+  margin-top: 20px;
+}
+
+.save-btn {
+  height: 44px;
+  min-width: 160px;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 151, 196, 0.35) !important;
+  transition: box-shadow 0.2s ease, transform 0.15s ease !important;
+
+  &:not([disabled]):hover {
+    box-shadow: 0 6px 20px rgba(0, 151, 196, 0.45) !important;
+    transform: translateY(-1px);
+  }
+
+  &:not([disabled]):active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 151, 196, 0.3) !important;
+  }
+
+  &[disabled] {
+    opacity: 0.6;
+    background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+// ── Spinner ───────────────────────────────────────────────────────────────────
+
+.spinner {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+
+@media (max-width: 600px) {
+  .presences-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+
+  .actions-bar {
+    justify-content: stretch;
+  }
+
+  .save-btn {
+    width: 100%;
+  }
+}

@@ -28,6 +28,12 @@ public class SujetController {
         return ResponseEntity.ok(sujetService.getAllSujetsValides());
     }
 
+    @GetMapping("/en-attente")
+    @PreAuthorize("hasRole('RESPONSABLE_PFE')")
+    public ResponseEntity<List<SujetDTO>> getAllSujetsEnAttente() {
+        return ResponseEntity.ok(sujetService.getAllSujetsEnAttente());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SujetDTO> getSujetById(@PathVariable Long id) {
         return ResponseEntity.ok(sujetService.getSujetById(id));

@@ -1,0 +1,214 @@
+$burgundy: #6d1d4a;
+$teal: #0097c4;
+$surface: #fff;
+$border: #e2e8f0;
+$text-primary: #1e293b;
+$text-muted: #64748b;
+
+// ── Page wrapper ──────────────────────────────────────────────
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 960px;
+}
+
+// ── Section card ──────────────────────────────────────────────
+.section-card {
+  border: 1px solid $border;
+  border-radius: 16px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+// ── Card header ───────────────────────────────────────────────
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #4a1233 0%, $burgundy 60%, #8b2960 100%);
+  padding: 16px 22px;
+
+  &__icon {
+    font-family: 'Material Icons', sans-serif;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.2px;
+    margin: 0;
+  }
+}
+
+// ── Card body ─────────────────────────────────────────────────
+.card-body {
+  padding: 24px 22px;
+}
+
+// ── Submit form ───────────────────────────────────────────────
+.submit-form {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  width: 100%;
+
+  &--full {
+    grid-column: 1 / -1;
+  }
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.submit-btn {
+  background-color: $burgundy !important;
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 0 24px;
+  height: 42px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.btn-spinner {
+  // Scale down the spinner to fit the button
+  ::ng-deep circle {
+    stroke: rgba(255, 255, 255, 0.9) !important;
+  }
+}
+
+// ── Loading state ─────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 48px 0;
+  color: $text-muted;
+  font-size: 14px;
+}
+
+// ── Empty state ───────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 0;
+  text-align: center;
+
+  &__icon {
+    font-family: 'Material Icons', sans-serif;
+    font-size: 48px;
+    color: #cbd5e1;
+  }
+
+  &__text {
+    font-size: 16px;
+    font-weight: 600;
+    color: $text-primary;
+  }
+
+  &__sub {
+    font-size: 13px;
+    color: $text-muted;
+  }
+}
+
+// ── Table ─────────────────────────────────────────────────────
+.table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid $border;
+}
+
+.jus-table {
+  width: 100%;
+
+  th.mat-header-cell {
+    background: #f8fafc;
+    color: $text-muted;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    border-bottom: 1px solid $border;
+  }
+
+  td.mat-cell {
+    padding: 14px 16px;
+    font-size: 14px;
+    color: $text-primary;
+    border-bottom: 1px solid $border;
+    vertical-align: middle;
+  }
+
+  tr.mat-row:last-child td.mat-cell {
+    border-bottom: none;
+  }
+
+  tr.mat-row:hover td.mat-cell {
+    background: #f8fafc;
+  }
+}
+
+.cell-motif {
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cell-comment {
+  max-width: 240px;
+  color: $text-muted;
+  font-size: 13px;
+}
+
+// ── Statut chips ──────────────────────────────────────────────
+.statut-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+
+  &.chip--pending {
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
+  }
+
+  &.chip--accepted {
+    background: rgba(16, 185, 129, 0.14);
+    color: #047857;
+  }
+
+  &.chip--refused {
+    background: rgba(239, 68, 68, 0.14);
+    color: #b91c1c;
+  }
+}

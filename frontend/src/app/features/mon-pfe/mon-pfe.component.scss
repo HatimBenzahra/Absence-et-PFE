@@ -1,0 +1,410 @@
+$burgundy: #6d1d4a;
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.12);
+$teal-dark: #007a9e;
+$border: #e2e8f0;
+$text-primary: #1e293b;
+$text-muted: #64748b;
+$bg-surface: #fff;
+$radius-lg: 16px;
+$radius-md: 12px;
+$radius-sm: 8px;
+
+.mon-pfe-page {
+  padding: 24px;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ─── Page Header ────────────────────────────────────────────────────────────
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  &__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: $radius-md;
+    background: linear-gradient(135deg, $burgundy 0%, darken($burgundy, 10%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  &__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 2px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+// ─── Loading State ───────────────────────────────────────────────────────────
+
+.loading-state {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+  color: $text-muted;
+  font-size: 14px;
+
+  &--sm {
+    padding: 16px 0;
+  }
+}
+
+// ─── Empty State ─────────────────────────────────────────────────────────────
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 24px;
+  background: $bg-surface;
+  border: 1px dashed $border;
+  border-radius: $radius-lg;
+  gap: 12px;
+
+  &__icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba($burgundy, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $burgundy;
+    margin-bottom: 4px;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: $text-muted;
+    line-height: 1.6;
+    max-width: 360px;
+    margin: 0;
+  }
+}
+
+// ─── Affectation Card ────────────────────────────────────────────────────────
+
+.affectation-card {
+  background: linear-gradient(135deg, #4a1233 0%, $burgundy 45%, #8b2960 100%);
+  border-radius: $radius-lg !important;
+  box-shadow: 0 8px 32px rgba($burgundy, 0.25) !important;
+  padding: 28px !important;
+  color: #fff;
+  border: none !important;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  &__badge {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.95);
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin: 0 0 20px;
+    color: #fff;
+  }
+
+  &__meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+  }
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  &__label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  &__value {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
+  }
+}
+
+// ─── Status Chips ────────────────────────────────────────────────────────────
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+
+  &--blue {
+    background: rgba(0, 151, 196, 0.2);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  &--green {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+  }
+
+  &--red {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+  }
+}
+
+// ─── Section Header ──────────────────────────────────────────────────────────
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+
+  &__title {
+    font-size: 17px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  &__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: $teal-light;
+    color: $teal-dark;
+    font-size: 12px;
+    font-weight: 700;
+  }
+}
+
+// ─── Livrables Section ───────────────────────────────────────────────────────
+
+.livrables-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.table-card {
+  border-radius: $radius-lg !important;
+  border: 1px solid $border !important;
+  box-shadow: none !important;
+  overflow: hidden;
+  padding: 0 !important;
+}
+
+.livrables-table {
+  width: 100%;
+
+  .mat-mdc-header-row {
+    background: #f8fafc;
+  }
+
+  .mat-mdc-header-cell {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: $text-muted;
+    border-bottom: 1px solid $border;
+    padding: 12px 16px;
+  }
+
+  .mat-mdc-cell {
+    padding: 14px 16px;
+    border-bottom: 1px solid $border;
+    vertical-align: middle;
+  }
+
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom: none;
+  }
+
+  .mat-mdc-row:hover {
+    background: #f8fafc;
+  }
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: $radius-sm;
+  background: $teal-light;
+  color: $teal-dark;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cell-text {
+  font-size: 14px;
+  color: $text-primary;
+
+  &--muted {
+    color: $text-muted;
+    font-size: 13px;
+  }
+}
+
+.livrable-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $teal;
+  text-decoration: none;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $teal-dark;
+    text-decoration: underline;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+.livrables-empty {
+  padding: 24px;
+  text-align: center;
+  color: $text-muted;
+  font-size: 14px;
+  background: $bg-surface;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+}
+
+// ─── Submit Card ─────────────────────────────────────────────────────────────
+
+.submit-card {
+  border-radius: $radius-lg !important;
+  border: 1px solid $border !important;
+  box-shadow: none !important;
+  padding: 24px !important;
+
+  &__header {
+    margin-bottom: 20px;
+  }
+
+  &__title {
+    font-size: 16px;
+    font-weight: 700;
+    color: $text-primary;
+    margin: 0 0 4px;
+  }
+
+  &__subtitle {
+    font-size: 13px;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.livrable-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-field {
+  width: 100%;
+
+  &--full {
+    width: 100%;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.submit-btn {
+  background: $burgundy !important;
+  color: #fff !important;
+  border-radius: $radius-sm !important;
+  padding: 0 24px !important;
+  height: 42px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.2s !important;
+
+  &:hover:not([disabled]) {
+    background: darken($burgundy, 8%) !important;
+  }
+
+  &[disabled] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+

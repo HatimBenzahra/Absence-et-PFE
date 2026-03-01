@@ -4,7 +4,7 @@ export interface Candidature {
   sujetTitre: string;
   rangPreference: number;
   statut: StatutCandidature;
-  dateCandidature: Date;
+  dateCandidature: string;
 }
 
 export enum StatutCandidature {

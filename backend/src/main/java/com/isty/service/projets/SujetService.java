@@ -34,6 +34,13 @@ public class SujetService {
                 .collect(Collectors.toList());
     }
 
+    public List<SujetDTO> getAllSujetsEnAttente() {
+        return sujetRepository.findByStatut(StatutSujet.EN_ATTENTE)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public SujetDTO getSujetById(Long id) {
         Sujet sujet = sujetRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Sujet non trouve avec l'id: " + id));

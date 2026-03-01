@@ -1,0 +1,138 @@
+<div class="page-wrapper">
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 1 — Soumettre un justificatif
+  ══════════════════════════════════════════════════ -->
+  <mat-card class="section-card">
+    <div class="card-header">
+      <span class="card-header__icon">description</span>
+      <h2 class="card-header__title">Soumettre un justificatif</h2>
+    </div>
+
+    <div class="card-body">
+      <form [formGroup]="submitForm" (ngSubmit)="onSubmit()" class="submit-form">
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>ID de présence</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="presenceId"
+            placeholder="Ex : 42"
+          />
+          @if (submitForm.get('presenceId')?.invalid && submitForm.get('presenceId')?.touched) {
+            <mat-error>L'identifiant de présence est requis.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field form-field--full">
+          <mat-label>Motif</mat-label>
+          <textarea
+            matInput
+            formControlName="motif"
+            placeholder="Décrivez le motif de votre absence…"
+            rows="4"
+          ></textarea>
+          @if (submitForm.get('motif')?.invalid && submitForm.get('motif')?.touched) {
+            <mat-error>Le motif est requis.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field form-field--full">
+          <mat-label>URL du fichier justificatif (optionnel)</mat-label>
+          <input
+            matInput
+            type="text"
+            formControlName="urlFichier"
+            placeholder="https://drive.google.com/…"
+          />
+          <mat-hint>Lien vers un document justificatif hébergé en ligne.</mat-hint>
+        </mat-form-field>
+
+        <div class="form-actions">
+          <button
+            mat-flat-button
+            color="primary"
+            type="submit"
+            class="submit-btn"
+            [disabled]="submitting || submitForm.invalid"
+          >
+            @if (submitting) {
+              <mat-spinner diameter="20" class="btn-spinner"></mat-spinner>
+              <span>Envoi en cours…</span>
+            } @else {
+              <span>Soumettre</span>
+            }
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </mat-card>
+
+  <!-- ═══════════════════════════════════════════════
+       SECTION 2 — Mes justificatifs
+  ══════════════════════════════════════════════════ -->
+  <mat-card class="section-card">
+    <div class="card-header">
+      <span class="card-header__icon">fact_check</span>
+      <h2 class="card-header__title">Mes justificatifs</h2>
+    </div>
+
+    <div class="card-body">
+
+      @if (loadingList) {
+        <div class="loading-state">
+          <mat-spinner diameter="40"></mat-spinner>
+          <p>Chargement…</p>
+        </div>
+      } @else if (justificatifs.length === 0) {
+        <div class="empty-state">
+          <span class="empty-state__icon">inbox</span>
+          <p class="empty-state__text">Aucun justificatif soumis pour le moment.</p>
+          <p class="empty-state__sub">Utilisez le formulaire ci-dessus pour en soumettre un.</p>
+        </div>
+      } @else {
+        <div class="table-container">
+          <table mat-table [dataSource]="justificatifs" class="mat-elevation-z0 jus-table">
+
+            <!-- Motif column -->
+            <ng-container matColumnDef="motif">
+              <th mat-header-cell *matHeaderCellDef>Motif</th>
+              <td mat-cell *matCellDef="let row" class="cell-motif">{{ row.motif }}</td>
+            </ng-container>
+
+            <!-- Statut column -->
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="statut-chip" [ngClass]="statutClass(row.statut)">
+                  {{ statutLabel(row.statut) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <!-- Date Dépôt column -->
+            <ng-container matColumnDef="dateDepot">
+              <th mat-header-cell *matHeaderCellDef>Date de dépôt</th>
+              <td mat-cell *matCellDef="let row">{{ row.dateDepot | date:'dd/MM/yyyy' }}</td>
+            </ng-container>
+
+            <!-- Commentaire Validation column -->
+            <ng-container matColumnDef="commentaireValidation">
+              <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+              <td mat-cell *matCellDef="let row" class="cell-comment">
+                {{ row.commentaireValidation ?? '—' }}
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      }
+
+    </div>
+  </mat-card>
+
+</div>

@@ -5,7 +5,7 @@ export interface Sujet {
   motsCles: string;
   statut: StatutSujet;
   enseignantNom: string;
-  dateCreation: Date;
+  dateCreation: string;
 }
 
 export enum StatutSujet {

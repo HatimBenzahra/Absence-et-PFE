@@ -1,0 +1,334 @@
+$burgundy: #6d1d4a;
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.12);
+$teal-mid: rgba(0, 151, 196, 0.18);
+$burgundy-dark: #4a1233;
+$surface: #ffffff;
+$border: #e2e8f0;
+$text-primary: #1e293b;
+$text-muted: #64748b;
+$bg: #f8fafc;
+
+// ── Page wrapper ──────────────────────────────────────────────────────────────
+
+.scanner-page {
+  min-height: 100%;
+  padding: 32px 24px;
+  max-width: 560px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
+.page-header {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+
+.header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgba(109, 29, 74, 0.28);
+}
+
+.qr-icon {
+  font-size: 32px;
+  color: #fff;
+  line-height: 1;
+}
+
+.page-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: $text-primary;
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: $text-muted;
+  line-height: 1.6;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+// ── Scanner card ──────────────────────────────────────────────────────────────
+
+.scanner-card {
+  border-radius: 16px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+
+  mat-card-header {
+    background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
+    padding: 20px 24px;
+    margin-bottom: 0;
+
+    mat-card-title {
+      color: #fff !important;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      color: rgba(255, 255, 255, 0.75) !important;
+      font-size: 13px;
+      margin-top: 2px;
+    }
+  }
+
+  mat-card-content {
+    padding: 24px !important;
+  }
+}
+
+// ── Form ──────────────────────────────────────────────────────────────────────
+
+.scanner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.token-field {
+  width: 100%;
+
+  // Override outline field accent to teal
+  ::ng-deep {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $border !important;
+    }
+
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__notch,
+      .mdc-notched-outline__trailing {
+        border-color: $teal !important;
+        border-width: 2px !important;
+      }
+
+      .mat-mdc-floating-label {
+        color: $teal !important;
+      }
+    }
+
+    input {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 15px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+  }
+}
+
+// ── Pointer button ────────────────────────────────────────────────────────────
+
+.pointer-btn {
+  width: 100%;
+  height: 48px;
+  border-radius: 10px !important;
+  background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
+  color: #fff !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  box-shadow: 0 4px 14px rgba(0, 151, 196, 0.35) !important;
+  transition: box-shadow 0.2s ease, transform 0.15s ease !important;
+
+  &:not([disabled]):hover {
+    box-shadow: 0 6px 20px rgba(0, 151, 196, 0.45) !important;
+    transform: translateY(-1px);
+  }
+
+  &:not([disabled]):active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 151, 196, 0.3) !important;
+  }
+
+  &[disabled] {
+    opacity: 0.6;
+    background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-icon {
+  font-size: 17px;
+  line-height: 1;
+}
+
+// ── Loading spinner ───────────────────────────────────────────────────────────
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── Result card ───────────────────────────────────────────────────────────────
+
+.result-card {
+  border-radius: 16px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  overflow: hidden !important;
+  animation: slideIn 0.3s ease;
+
+  mat-card-header {
+    background: $teal-light;
+    padding: 16px 24px;
+    border-bottom: 1px solid $teal-mid;
+    margin-bottom: 0;
+  }
+
+  .result-title {
+    color: darken($teal, 10%) !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    &::before {
+      content: '✓';
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      background: $teal;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      font-weight: 700;
+    }
+  }
+
+  mat-card-content {
+    padding: 20px 24px !important;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ── Result grid ───────────────────────────────────────────────────────────────
+
+.result-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 0;
+  border-bottom: 1px solid $border;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.result-label {
+  font-size: 13px;
+  color: $text-muted;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.result-value {
+  font-size: 14px;
+  color: $text-primary;
+  font-weight: 600;
+  text-align: right;
+
+  &.mono {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    letter-spacing: 0.03em;
+    color: $text-muted;
+  }
+}
+
+// ── Statut badge ──────────────────────────────────────────────────────────────
+
+.statut-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  &.statut-present {
+    background: rgba(16, 185, 129, 0.12);
+    color: #059669;
+  }
+
+  &.statut-absent {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+  }
+
+  &.statut-retard {
+    background: rgba(245, 158, 11, 0.12);
+    color: #d97706;
+  }
+
+  &.statut-excuse {
+    background: $teal-light;
+    color: darken($teal, 8%);
+  }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+
+@media (max-width: 600px) {
+  .scanner-page {
+    padding: 20px 16px;
+  }
+
+  .page-title {
+    font-size: 22px;
+  }
+}

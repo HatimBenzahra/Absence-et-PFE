@@ -1,0 +1,284 @@
+// Brand tokens
+$burgundy: #6d1d4a;
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.08);
+$teal-mid: rgba(0, 151, 196, 0.14);
+$slate-50: #f8fafc;
+$slate-100: #f1f5f9;
+$slate-200: #e2e8f0;
+$slate-400: #94a3b8;
+$slate-500: #64748b;
+$slate-700: #334155;
+$slate-900: #0f172a;
+
+// ─── Layout ────────────────────────────────────────────────────────────────
+.mes-sujets-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// ─── Cards ─────────────────────────────────────────────────────────────────
+.section-card {
+  border-radius: 16px !important;
+  border: 1px solid $slate-200 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  overflow: hidden;
+}
+
+// ─── Card Header ───────────────────────────────────────────────────────────
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 24px 28px 0;
+
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $slate-900;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .section-subtitle {
+    font-size: 13px;
+    color: $slate-500;
+    line-height: 1.5;
+    max-width: 520px;
+  }
+}
+
+// Propose card — burgundy accent on title
+.propose-card .card-header .section-title {
+  color: $burgundy;
+}
+
+// ─── Badge ─────────────────────────────────────────────────────────────────
+.header-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  margin-left: 16px;
+
+  .badge-count {
+    font-size: 34px;
+    font-weight: 800;
+    color: $teal;
+    line-height: 1;
+  }
+
+  .badge-label {
+    font-size: 11px;
+    color: $slate-400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// ─── Card body ─────────────────────────────────────────────────────────────
+.card-body {
+  padding: 20px 28px 28px !important;
+}
+
+// ─── Form ──────────────────────────────────────────────────────────────────
+.propose-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 16px;
+
+  .full-width {
+    width: 100%;
+  }
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.submit-btn {
+  background-color: $burgundy !important;
+  color: #fff !important;
+  border-radius: 10px !important;
+  padding: 0 28px !important;
+  height: 44px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  letter-spacing: 0.3px !important;
+  min-width: 180px !important;
+
+  &:hover:not(:disabled) {
+    background-color: #5a1840 !important;
+  }
+
+  &:disabled {
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+  }
+}
+
+.btn-spinner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  ::ng-deep circle {
+    stroke: #fff !important;
+  }
+}
+
+// ─── Loading state ─────────────────────────────────────────────────────────
+.loading-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 52px 0;
+  gap: 16px;
+
+  .loading-text {
+    color: $slate-500;
+    font-size: 14px;
+  }
+}
+
+// ─── Empty state ───────────────────────────────────────────────────────────
+.empty-state {
+  text-align: center;
+  padding: 52px 24px;
+
+  .empty-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+
+  .empty-message {
+    font-size: 16px;
+    font-weight: 600;
+    color: $slate-700;
+    margin-bottom: 6px;
+  }
+
+  .empty-hint {
+    font-size: 14px;
+    color: $slate-400;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+}
+
+// ─── Table wrapper ─────────────────────────────────────────────────────────
+.table-wrapper {
+  border-radius: 12px;
+  border: 1px solid $slate-200;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+// ─── Table ─────────────────────────────────────────────────────────────────
+.sujets-table {
+  width: 100%;
+
+  .mat-mdc-header-row {
+    background: $slate-50;
+  }
+
+  .mat-mdc-header-cell {
+    font-weight: 700;
+    font-size: 12px;
+    color: $slate-500;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    border-bottom: 1px solid $slate-200;
+    padding: 12px 16px;
+  }
+
+  .mat-mdc-row {
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: $teal-light;
+    }
+
+    &:last-child .mat-mdc-cell {
+      border-bottom: none;
+    }
+  }
+
+  .mat-mdc-cell {
+    font-size: 14px;
+    color: #1e293b;
+    border-bottom: 1px solid $slate-100;
+    padding: 14px 16px;
+    vertical-align: middle;
+  }
+}
+
+// ─── Cell variants ─────────────────────────────────────────────────────────
+.titre-cell {
+  font-weight: 600;
+  color: $slate-900;
+  max-width: 220px;
+}
+
+.description-cell {
+  color: $slate-500;
+  max-width: 300px;
+  line-height: 1.5;
+  font-size: 13px;
+}
+
+.mots-cles-cell {
+  max-width: 240px;
+}
+
+.date-cell {
+  color: $slate-500;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+// ─── Keyword chips ─────────────────────────────────────────────────────────
+.keyword-chip {
+  font-size: 11px !important;
+  height: 24px !important;
+  min-height: 24px !important;
+  background-color: $teal-mid !important;
+  color: #006a8a !important;
+  border-radius: 999px !important;
+}
+
+// ─── Status chips ──────────────────────────────────────────────────────────
+.statut-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.chip-valide {
+  background: rgba(34, 197, 94, 0.12);
+  color: #15803d;
+}
+
+.chip-en-attente {
+  background: rgba(251, 146, 60, 0.14);
+  color: #c2410c;
+}
+
+.chip-refuse {
+  background: rgba(239, 68, 68, 0.12);
+  color: #b91c1c;
+}
