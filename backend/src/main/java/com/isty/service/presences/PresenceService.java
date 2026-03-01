@@ -132,6 +132,10 @@ public class PresenceService {
                 : null;
         String etudiantNumero = etudiant != null ? etudiant.getNumEtudiant() : null;
 
+        var seance = presence.getSeance();
+        String seanceMatiere = seance != null ? seance.getMatiere() : null;
+        var seanceDate = seance != null ? seance.getDateHeureDebut() : null;
+
         return PresenceDTO.builder()
                 .id(presence.getId())
                 .etudiantNom(etudiantNom)
@@ -140,6 +144,8 @@ public class PresenceService {
                 .modeSaisie(presence.getModeSaisie())
                 .horodatage(presence.getHorodatage())
                 .aJustificatif(presence.getJustificatif() != null)
+                .seanceMatiere(seanceMatiere)
+                .seanceDate(seanceDate)
                 .build();
     }
 }

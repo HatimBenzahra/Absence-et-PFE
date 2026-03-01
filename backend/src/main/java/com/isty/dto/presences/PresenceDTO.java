@@ -21,4 +21,6 @@ public class PresenceDTO {
     private ModeSaisie modeSaisie;
     private LocalDateTime horodatage;
     private boolean aJustificatif;
+    private String seanceMatiere;
+    private LocalDateTime seanceDate;
 }

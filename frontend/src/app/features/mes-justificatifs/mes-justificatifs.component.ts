@@ -8,6 +8,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { PresenceService } from '../../core/services/presence.service';
+import { Presence } from '../../core/models/presence.model';
 import { JustificatifService } from '../../core/services/justificatif.service';
 import { NotificationService } from '../../shared/services/notification.service';
 import { Justificatif, StatutJustificatif } from '../../core/models/justificatif.model';
@@ -24,6 +27,7 @@ import { Justificatif, StatutJustificatif } from '../../core/models/justificatif
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatSelectModule,
     MatProgressSpinnerModule,
   ],
   templateUrl: './mes-justificatifs.component.html',
@@ -36,12 +40,16 @@ export class MesJustificatifsComponent implements OnInit {
   displayedColumns = ['motif', 'statut', 'dateDepot', 'commentaireValidation'];
   StatutJustificatif = StatutJustificatif;
 
+  absencesRetards: Presence[] = [];
+  loadingPresences = false;
+
   loadingList = false;
   submitting = false;
 
   constructor(
     private fb: FormBuilder,
     private justificatifService: JustificatifService,
+    private presenceService: PresenceService,
     private notify: NotificationService
   ) {
     this.submitForm = this.fb.group({
@@ -53,6 +61,33 @@ export class MesJustificatifsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadJustificatifs();
+    this.loadAbsences();
+  }
+
+  loadAbsences(): void {
+    this.loadingPresences = true;
+    this.presenceService.getMyPresences().subscribe({
+      next: (data) => {
+        this.absencesRetards = data.filter(
+          (p) => (p.statut === 'ABSENT' || p.statut === 'RETARD') && !p.aJustificatif
+        );
+        this.loadingPresences = false;
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.loadingPresences = false;
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  presenceLabel(p: Presence): string {
+    const statut = p.statut === 'ABSENT' ? 'Absent' : 'Retard';
+    const matiere = p.seanceMatiere || 'Séance';
+    const date = p.seanceDate
+      ? new Date(p.seanceDate).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+      : new Date(p.horodatage).toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return `${matiere} — ${date} (${statut})`;
   }
 
   loadJustificatifs(): void {
@@ -88,6 +123,7 @@ export class MesJustificatifsComponent implements OnInit {
         this.submitForm.reset();
         this.submitting = false;
         this.loadJustificatifs();
+        this.loadAbsences();
         this.cdr.markForCheck();
       },
       error: () => {

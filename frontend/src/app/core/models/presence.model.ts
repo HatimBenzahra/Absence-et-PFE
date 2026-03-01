@@ -6,6 +6,8 @@ export interface Presence {
   modeSaisie: ModeSaisie;
   horodatage: string;
   aJustificatif: boolean;
+  seanceMatiere?: string;
+  seanceDate?: string;
 }
 
 export enum StatutPresence {

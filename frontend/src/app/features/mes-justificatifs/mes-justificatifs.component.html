@@ -13,15 +13,17 @@
       <form [formGroup]="submitForm" (ngSubmit)="onSubmit()" class="submit-form">
 
         <mat-form-field appearance="outline" class="form-field">
-          <mat-label>ID de présence</mat-label>
-          <input
-            matInput
-            type="number"
-            formControlName="presenceId"
-            placeholder="Ex : 42"
-          />
+          <mat-label>Absence / Retard à justifier</mat-label>
+          <mat-select formControlName="presenceId" [disabled]="loadingPresences">
+            @for (p of absencesRetards; track p.id) {
+              <mat-option [value]="p.id">{{ presenceLabel(p) }}</mat-option>
+            }
+          </mat-select>
+          @if (absencesRetards.length === 0 && !loadingPresences) {
+            <mat-hint>Aucune absence ou retard à justifier.</mat-hint>
+          }
           @if (submitForm.get('presenceId')?.invalid && submitForm.get('presenceId')?.touched) {
-            <mat-error>L'identifiant de présence est requis.</mat-error>
+            <mat-error>Sélectionnez une absence à justifier.</mat-error>
           }
         </mat-form-field>
 
