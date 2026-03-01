@@ -22,25 +22,25 @@ public class StatistiquesController {
     private final StatistiquesService statistiquesService;
 
     @GetMapping("/etudiant/{id}")
-    @PreAuthorize("hasAnyRole('ETUDIANT', 'ENSEIGNANT', 'RESPONSABLE_PFE')")
+    @PreAuthorize("hasAnyRole('ETUDIANT', 'ENSEIGNANT', 'RESPONSABLE_PFE', 'SECRETARIAT', 'ADMIN')")
     public ResponseEntity<StatistiquesDTO> getStatistiquesEtudiant(@PathVariable Long id) {
         return ResponseEntity.ok(statistiquesService.getStatistiquesEtudiant(id));
     }
 
     @GetMapping("/groupe/{groupe}")
-    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE')")
+    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE', 'SECRETARIAT', 'ADMIN')")
     public ResponseEntity<StatistiquesDTO> getStatistiquesGroupe(@PathVariable String groupe) {
         return ResponseEntity.ok(statistiquesService.getStatistiquesGroupe(groupe));
     }
 
     @GetMapping("/matiere/{matiere}")
-    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE')")
+    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE', 'SECRETARIAT', 'ADMIN')")
     public ResponseEntity<StatistiquesDTO> getStatistiquesMatiere(@PathVariable String matiere) {
         return ResponseEntity.ok(statistiquesService.getStatistiquesMatiere(matiere));
     }
 
     @GetMapping("/export/csv")
-    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE')")
+    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE', 'SECRETARIAT', 'ADMIN')")
     public ResponseEntity<byte[]> exporterCSV(
             @RequestParam String groupe,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime debut,
@@ -55,7 +55,7 @@ public class StatistiquesController {
     }
 
     @GetMapping("/export/pdf")
-    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE')")
+    @PreAuthorize("hasAnyRole('ENSEIGNANT', 'RESPONSABLE_PFE', 'SECRETARIAT', 'ADMIN')")
     public ResponseEntity<byte[]> exporterPDF(
             @RequestParam String groupe,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime debut,

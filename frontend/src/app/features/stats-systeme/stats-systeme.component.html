@@ -1,0 +1,49 @@
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <header class="page-header">
+    <div class="page-header__icon">
+      <mat-icon>insights</mat-icon>
+    </div>
+    <div>
+      <h1 class="page-header__title">Statistiques système</h1>
+      <p class="page-header__subtitle">Vue d'ensemble des utilisateurs et de la plateforme</p>
+    </div>
+  </header>
+
+  <!-- Loading -->
+  <div class="loading-state" *ngIf="loading">
+    <mat-progress-spinner diameter="48" strokeWidth="3" mode="indeterminate"></mat-progress-spinner>
+    <p>Chargement des statistiques…</p>
+  </div>
+
+  <!-- Stats Content -->
+  <ng-container *ngIf="!loading">
+
+    <!-- Total Users -->
+    <mat-card class="total-card">
+      <div class="total-icon-wrap">
+        <mat-icon>groups</mat-icon>
+      </div>
+      <div class="total-info">
+        <p class="total-value">{{ totalUtilisateurs }}</p>
+        <p class="total-label">Utilisateurs inscrits</p>
+      </div>
+    </mat-card>
+
+    <!-- Per-Role Grid -->
+    <div class="stats-grid">
+      <mat-card *ngFor="let stat of roleStats" class="stat-card" [ngClass]="stat.colorClass">
+        <div class="stat-icon-wrap">
+          <mat-icon>{{ stat.icon }}</mat-icon>
+        </div>
+        <div class="stat-info">
+          <p class="stat-value">{{ stat.count }}</p>
+          <p class="stat-label">{{ stat.label }}</p>
+        </div>
+      </mat-card>
+    </div>
+
+  </ng-container>
+
+</div>

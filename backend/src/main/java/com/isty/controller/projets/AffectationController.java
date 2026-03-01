@@ -52,6 +52,12 @@ public class AffectationController {
         return ResponseEntity.ok(affectationService.getMesEncadrements(utilisateur.getId()));
     }
 
+    @GetMapping("/toutes")
+    @PreAuthorize("hasRole('RESPONSABLE_PFE')")
+    public ResponseEntity<List<AffectationDTO>> getAllAffectations() {
+        return ResponseEntity.ok(affectationService.getAllAffectations());
+    }
+
     @PutMapping("/{id}/terminer")
     @PreAuthorize("hasRole('RESPONSABLE_PFE') or hasRole('ENSEIGNANT')")
     public ResponseEntity<AffectationDTO> terminerPFE(@PathVariable Long id) {

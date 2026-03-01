@@ -25,4 +25,12 @@ export class CandidatureService {
   getCandidaturesBySujet(sujetId: number): Observable<Candidature[]> {
     return this.http.get<Candidature[]>(`${this.apiUrl}/sujet/${sujetId}`);
   }
+
+  accepter(id: number): Observable<Candidature> {
+    return this.http.patch<Candidature>(`${this.apiUrl}/${id}/accepter`, {});
+  }
+
+  refuser(id: number): Observable<Candidature> {
+    return this.http.patch<Candidature>(`${this.apiUrl}/${id}/refuser`, {});
+  }
 }

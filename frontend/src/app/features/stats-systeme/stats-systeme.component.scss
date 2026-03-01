@@ -1,0 +1,257 @@
+// ─── Brand tokens ─────────────────────────────────────────────────────────────
+$burgundy: #6d1d4a;
+$burgundy-dark: #4a1233;
+$burgundy-light: rgba(109, 29, 74, 0.1);
+$teal: #0097c4;
+$teal-light: rgba(0, 151, 196, 0.1);
+$text-primary: #1e293b;
+$text-muted: #64748b;
+$border: #e2e8f0;
+
+// ─── Layout ────────────────────────────────────────────────────────────────────
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+// ─── Header ────────────────────────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 151, 196, 0.18), transparent 50%),
+    linear-gradient(135deg, $burgundy-dark 0%, $burgundy 50%, #8b2960 100%);
+  border-radius: 20px;
+  color: #fff;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.5;
+  }
+}
+
+// ─── Total Card ────────────────────────────────────────────────────────────────
+.total-card {
+  border-radius: 16px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 20px;
+  padding: 28px 32px !important;
+  background: linear-gradient(135deg, rgba(0, 151, 196, 0.04) 0%, #fff 60%) !important;
+
+  .total-icon-wrap {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: $teal-light;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: $teal;
+    }
+  }
+
+  .total-info {
+    .total-value {
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+      color: $teal;
+      margin-bottom: 6px;
+    }
+
+    .total-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: $text-muted;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+// ─── Stats Grid ────────────────────────────────────────────────────────────────
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  border-radius: 14px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 16px;
+  padding: 20px !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .stat-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .stat-info {
+    .stat-value {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: $text-muted;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  // Variants
+  &--etudiant {
+    .stat-icon-wrap {
+      background: $teal-light;
+      mat-icon { color: $teal; }
+    }
+    .stat-value { color: $teal; }
+  }
+
+  &--enseignant {
+    .stat-icon-wrap {
+      background: rgba(34, 197, 94, 0.1);
+      mat-icon { color: #16a34a; }
+    }
+    .stat-value { color: #16a34a; }
+  }
+
+  &--responsable {
+    .stat-icon-wrap {
+      background: rgba(249, 115, 22, 0.1);
+      mat-icon { color: #ea580c; }
+    }
+    .stat-value { color: #ea580c; }
+  }
+
+  &--secretariat {
+    .stat-icon-wrap {
+      background: $burgundy-light;
+      mat-icon { color: $burgundy; }
+    }
+    .stat-value { color: $burgundy; }
+  }
+
+  &--admin {
+    .stat-icon-wrap {
+      background: rgba(99, 102, 241, 0.1);
+      mat-icon { color: #6366f1; }
+    }
+    .stat-value { color: #6366f1; }
+  }
+}
+
+// ─── Loading State ─────────────────────────────────────────────────────────────
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  gap: 16px;
+
+  p {
+    font-size: 14px;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+// ─── Responsive ────────────────────────────────────────────────────────────────
+@media (max-width: 640px) {
+  .page-header {
+    padding: 20px;
+
+    &__icon {
+      display: none;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .total-card {
+    padding: 20px !important;
+
+    .total-icon-wrap {
+      width: 48px;
+      height: 48px;
+
+      mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .total-value {
+      font-size: 32px;
+    }
+  }
+}

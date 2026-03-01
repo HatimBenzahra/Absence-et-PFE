@@ -16,7 +16,10 @@ public class CandidatureDTO {
     private Long id;
     private Long sujetId;
     private String sujetTitre;
+    private Long etudiantId;
+    private String etudiantNom;
     private Integer rangPreference;
+    private String motivation;
     private StatutCandidature statut;
     private LocalDateTime dateCandidature;
 }

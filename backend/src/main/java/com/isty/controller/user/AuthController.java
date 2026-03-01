@@ -50,6 +50,18 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(toUserDTO(utilisateur));
     }
 
+    @PostMapping("/register/administratif")
+    public ResponseEntity<UserDTO> registerAdministratif(@Valid @RequestBody RegisterRequest request) {
+        Utilisateur utilisateur = authService.registerAdministratif(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toUserDTO(utilisateur));
+    }
+
+    @PostMapping("/register/administrateur")
+    public ResponseEntity<UserDTO> registerAdministrateur(@Valid @RequestBody RegisterRequest request) {
+        Utilisateur utilisateur = authService.registerAdministrateur(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(toUserDTO(utilisateur));
+    }
+
     private UserDTO toUserDTO(Utilisateur utilisateur) {
         return UserDTO.builder()
                 .id(utilisateur.getId())

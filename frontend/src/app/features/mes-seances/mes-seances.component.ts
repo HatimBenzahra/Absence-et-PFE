@@ -129,10 +129,11 @@ export class MesSeancesComponent implements OnInit {
 
   typeSeanceLabel(type: TypeSeance): string {
     const labels: Record<TypeSeance, string> = {
-      [TypeSeance.COURS]: 'Cours',
+      [TypeSeance.CM]: 'Cours magistral',
       [TypeSeance.TD]: 'TD',
       [TypeSeance.TP]: 'TP',
       [TypeSeance.EXAMEN]: 'Examen',
+      [TypeSeance.SOUTENANCE]: 'Soutenance',
     };
     return labels[type] ?? type;
   }

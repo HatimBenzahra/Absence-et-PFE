@@ -38,10 +38,11 @@
             <mat-label>Type de séance</mat-label>
             <mat-icon matPrefix>category</mat-icon>
             <mat-select formControlName="typeSeance">
-              <mat-option value="COURS">Cours</mat-option>
+              <mat-option value="CM">Cours magistral</mat-option>
               <mat-option value="TD">TD</mat-option>
               <mat-option value="TP">TP</mat-option>
               <mat-option value="EXAMEN">Examen</mat-option>
+              <mat-option value="SOUTENANCE">Soutenance</mat-option>
             </mat-select>
             @if (createForm.get('typeSeance')?.hasError('required') && createForm.get('typeSeance')?.touched) {
               <mat-error>Le type est requis</mat-error>

@@ -5,6 +5,8 @@ import com.isty.dto.user.LoginRequest;
 import com.isty.dto.user.RegisterRequest;
 import com.isty.entity.user.*;
 import com.isty.exception.BadRequestException;
+import com.isty.repository.user.AdministrateurRepository;
+import com.isty.repository.user.AdministratifRepository;
 import com.isty.repository.user.EnseignantRepository;
 import com.isty.repository.user.EtudiantRepository;
 import com.isty.repository.user.ResponsablePFERepository;
@@ -28,6 +30,8 @@ public class AuthService {
     private final EtudiantRepository etudiantRepository;
     private final EnseignantRepository enseignantRepository;
     private final ResponsablePFERepository responsablePFERepository;
+    private final AdministratifRepository administratifRepository;
+    private final AdministrateurRepository administrateurRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -62,7 +66,8 @@ public class AuthService {
             case ETUDIANT -> registerEtudiant(request);
             case ENSEIGNANT -> registerEnseignant(request);
             case RESPONSABLE_PFE -> registerResponsablePFE(request);
-            default -> registerUtilisateur(request);
+            case SECRETARIAT -> registerAdministratif(request);
+            case ADMIN -> registerAdministrateur(request);
         };
     }
 
@@ -119,12 +124,32 @@ public class AuthService {
         return responsablePFERepository.save(responsable);
     }
 
-    private Utilisateur registerUtilisateur(RegisterRequest request) {
-        Utilisateur utilisateur = new Utilisateur();
-        setCommonFields(utilisateur, request);
-        utilisateur.setRole(request.getRole());
+    @Transactional
+    public Administratif registerAdministratif(RegisterRequest request) {
+        if (utilisateurRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Un utilisateur avec cet email existe deja");
+        }
 
-        return utilisateurRepository.save(utilisateur);
+        Administratif administratif = new Administratif();
+        setCommonFields(administratif, request);
+        administratif.setRole(Role.SECRETARIAT);
+        administratif.setService(request.getService());
+
+        return administratifRepository.save(administratif);
+    }
+
+    @Transactional
+    public Administrateur registerAdministrateur(RegisterRequest request) {
+        if (utilisateurRepository.existsByEmail(request.getEmail())) {
+            throw new BadRequestException("Un utilisateur avec cet email existe deja");
+        }
+
+        Administrateur administrateur = new Administrateur();
+        setCommonFields(administrateur, request);
+        administrateur.setRole(Role.ADMIN);
+        administrateur.setFonction(request.getFonction());
+
+        return administrateurRepository.save(administrateur);
     }
 
     private void setCommonFields(Utilisateur utilisateur, RegisterRequest request) {

@@ -1,0 +1,107 @@
+$burgundy: #6d1d4a;
+$border: #e2e8f0;
+$text-primary: #1e293b;
+$text-muted: #64748b;
+
+.page-wrapper {
+  padding: 24px;
+  max-width: 1200px;
+}
+
+.section-card {
+  border: 1px solid $border;
+  border-radius: 16px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #4a1233 0%, $burgundy 60%, #8b2960 100%);
+  padding: 16px 22px;
+
+  &__icon {
+    font-family: 'Material Icons', sans-serif;
+    font-size: 22px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  &__title {
+    margin: 0;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
+.card-body {
+  padding: 22px;
+}
+
+.selector-field {
+  width: min(420px, 100%);
+  margin-bottom: 8px;
+}
+
+.loading-state,
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 52px 24px;
+  color: $text-muted;
+
+  &__icon {
+    font-family: 'Material Icons', sans-serif;
+    font-size: 46px;
+    color: #cbd5e1;
+  }
+
+  &__text {
+    margin: 0;
+    color: $text-primary;
+    font-weight: 600;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid $border;
+  margin-top: 6px;
+}
+
+.seances-table {
+  width: 100%;
+
+  .mat-mdc-header-row {
+    background: #f8fafc;
+  }
+
+  .mat-mdc-header-cell {
+    color: $text-muted;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid $border;
+    white-space: nowrap;
+  }
+
+  .mat-mdc-cell {
+    color: $text-primary;
+    font-size: 14px;
+    border-bottom: 1px solid $border;
+  }
+
+  .mat-mdc-row:last-child .mat-mdc-cell {
+    border-bottom: none;
+  }
+
+  .mat-mdc-row:hover {
+    background: #f8fafc;
+  }
+}

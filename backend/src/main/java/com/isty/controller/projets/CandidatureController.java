@@ -54,4 +54,16 @@ public class CandidatureController {
         candidatureService.annulerCandidature(id, utilisateur.getId());
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/accepter")
+    @PreAuthorize("hasRole('RESPONSABLE_PFE')")
+    public ResponseEntity<CandidatureDTO> accepterCandidature(@PathVariable Long id) {
+        return ResponseEntity.ok(candidatureService.accepterCandidature(id));
+    }
+
+    @PatchMapping("/{id}/refuser")
+    @PreAuthorize("hasRole('RESPONSABLE_PFE')")
+    public ResponseEntity<CandidatureDTO> refuserCandidature(@PathVariable Long id) {
+        return ResponseEntity.ok(candidatureService.refuserCandidature(id));
+    }
 }

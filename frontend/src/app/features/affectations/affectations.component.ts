@@ -60,7 +60,7 @@ export class AffectationsComponent implements OnInit {
 
   loadAffectations(): void {
     this.isLoading = true;
-    this.affectationService.getMesEncadrements().subscribe({
+    this.affectationService.getAllAffectations().subscribe({
       next: (data) => {
         this.affectations = data;
         this.isLoading = false;

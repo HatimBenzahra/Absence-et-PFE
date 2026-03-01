@@ -51,4 +51,16 @@ public class PresenceController {
     public ResponseEntity<List<PresenceDTO>> getPresencesSeance(@PathVariable Long seanceId) {
         return ResponseEntity.ok(presenceService.getPresencesSeance(seanceId));
     }
+
+    @GetMapping("/global")
+    @PreAuthorize("hasAnyRole('SECRETARIAT', 'ADMIN')")
+    public ResponseEntity<List<PresenceDTO>> getAllPresences() {
+        return ResponseEntity.ok(presenceService.getAllPresences());
+    }
+
+    @GetMapping("/par-groupe/{groupe}")
+    @PreAuthorize("hasAnyRole('SECRETARIAT', 'ADMIN', 'ENSEIGNANT')")
+    public ResponseEntity<List<PresenceDTO>> getPresencesParGroupe(@PathVariable String groupe) {
+        return ResponseEntity.ok(presenceService.getPresencesParGroupe(groupe));
+    }
 }

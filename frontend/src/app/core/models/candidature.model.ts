@@ -2,7 +2,10 @@ export interface Candidature {
   id: number;
   sujetId: number;
   sujetTitre: string;
+  etudiantId: number;
+  etudiantNom: string;
   rangPreference: number;
+  motivation?: string;
   statut: StatutCandidature;
   dateCandidature: string;
 }

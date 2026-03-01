@@ -127,6 +127,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           title: 'Presences',
           items: [
+            { label: 'Emploi du temps', icon: 'calendar_month', route: '/emploi-du-temps-etudiant' },
             { label: 'Scanner QR', icon: 'qr_code_scanner', route: '/scanner' },
             { label: 'Mes presences', icon: 'fact_check', route: '/mes-presences' },
             { label: 'Mes justificatifs', icon: 'description', route: '/mes-justificatifs' },
@@ -177,6 +178,20 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       ],
       [Role.SECRETARIAT]: [
         {
+          title: 'Gestion',
+          items: [
+            { label: 'Emploi du temps', icon: 'calendar_month', route: '/emploi-du-temps' },
+            { label: 'Consultation profs', icon: 'groups', route: '/consultation-enseignants' },
+            { label: 'Justificatifs', icon: 'fact_check', route: '/justificatifs-gestion' },
+          ],
+        },
+        {
+          title: 'Présences',
+          items: [
+            { label: 'Supervision', icon: 'visibility', route: '/supervision-presences' },
+          ],
+        },
+        {
           title: 'Suivi',
           items: [
             { label: 'Statistiques', icon: 'query_stats', route: '/statistiques' },
@@ -188,7 +203,14 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         {
           title: 'Administration',
           items: [
-            { label: 'Statistiques globales', icon: 'insights', route: '/statistiques' },
+            { label: 'Utilisateurs', icon: 'manage_accounts', route: '/gestion-utilisateurs' },
+            { label: 'Stats système', icon: 'insights', route: '/stats-systeme' },
+          ],
+        },
+        {
+          title: 'Suivi',
+          items: [
+            { label: 'Statistiques', icon: 'query_stats', route: '/statistiques' },
             { label: 'Exports', icon: 'download', route: '/exports' },
           ],
         },

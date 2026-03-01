@@ -1,0 +1,168 @@
+<div class="page-wrapper">
+  <mat-card class="section-card">
+    <div class="card-header">
+      <span class="card-header__icon">fact_check</span>
+      <h2 class="card-header__title">Gestion des justificatifs</h2>
+    </div>
+
+    <div class="card-body">
+      <mat-tab-group class="tabs">
+        <mat-tab label="À valider">
+          @if (loadingPending) {
+            <div class="loading-state">
+              <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+              <p>Chargement...</p>
+            </div>
+          } @else if (justificatifsAVaLider.length === 0) {
+            <div class="empty-state">
+              <span class="empty-state__icon">inbox</span>
+              <p class="empty-state__text">Aucun justificatif en attente.</p>
+            </div>
+          } @else {
+            <div class="table-container">
+              <table mat-table [dataSource]="justificatifsAVaLider" class="jus-table">
+                <ng-container matColumnDef="motif">
+                  <th mat-header-cell *matHeaderCellDef>Motif</th>
+                  <td mat-cell *matCellDef="let j" class="cell-motif">{{ j.motif }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="urlFichier">
+                  <th mat-header-cell *matHeaderCellDef>Fichier</th>
+                  <td mat-cell *matCellDef="let j">
+                    @if (j.urlFichier) {
+                      <a [href]="j.urlFichier" target="_blank" class="file-link">Voir fichier</a>
+                    } @else {
+                      <span class="cell-na">—</span>
+                    }
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="dateDepot">
+                  <th mat-header-cell *matHeaderCellDef>Date de dépôt</th>
+                  <td mat-cell *matCellDef="let j">{{ j.dateDepot | date:'dd/MM/yyyy' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="statut">
+                  <th mat-header-cell *matHeaderCellDef>Statut</th>
+                  <td mat-cell *matCellDef="let j">
+                    <span class="statut-chip" [ngClass]="statutClass(j.statut)">{{ statutLabel(j.statut) }}</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="commentaire">
+                  <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+                  <td mat-cell *matCellDef="let j" class="cell-comment-input">
+                    <mat-form-field appearance="outline" class="comment-field" subscriptSizing="dynamic">
+                      <textarea
+                        matInput
+                        [ngModel]="getComment(j.id)"
+                        (ngModelChange)="setComment(j.id, $event)"
+                        placeholder="Commentaire optionnel..."
+                        rows="2"
+                      ></textarea>
+                    </mat-form-field>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let j" class="cell-actions">
+                    <div class="action-buttons">
+                      <button
+                        mat-flat-button
+                        class="btn-accepter"
+                        [disabled]="processingId === j.id"
+                        (click)="accepter(j)"
+                      >
+                        @if (processingId === j.id && processingAction === 'accept') {
+                          <mat-progress-spinner mode="indeterminate" diameter="16" class="btn-spinner"></mat-progress-spinner>
+                        } @else {
+                          Accepter
+                        }
+                      </button>
+
+                      <button
+                        mat-flat-button
+                        class="btn-refuser"
+                        [disabled]="processingId === j.id"
+                        (click)="refuser(j)"
+                      >
+                        @if (processingId === j.id && processingAction === 'refuse') {
+                          <mat-progress-spinner mode="indeterminate" diameter="16" class="btn-spinner"></mat-progress-spinner>
+                        } @else {
+                          Refuser
+                        }
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+          }
+        </mat-tab>
+
+        <mat-tab label="Tous">
+          @if (loadingAll) {
+            <div class="loading-state">
+              <mat-progress-spinner mode="indeterminate" diameter="40"></mat-progress-spinner>
+              <p>Chargement...</p>
+            </div>
+          } @else if (tousJustificatifs.length === 0) {
+            <div class="empty-state">
+              <span class="empty-state__icon">description</span>
+              <p class="empty-state__text">Aucun justificatif disponible.</p>
+            </div>
+          } @else {
+            <div class="table-container">
+              <table mat-table [dataSource]="tousJustificatifs" class="jus-table">
+                <ng-container matColumnDef="motif">
+                  <th mat-header-cell *matHeaderCellDef>Motif</th>
+                  <td mat-cell *matCellDef="let j" class="cell-motif">{{ j.motif }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="urlFichier">
+                  <th mat-header-cell *matHeaderCellDef>Fichier</th>
+                  <td mat-cell *matCellDef="let j">
+                    @if (j.urlFichier) {
+                      <a [href]="j.urlFichier" target="_blank" class="file-link">Voir fichier</a>
+                    } @else {
+                      <span class="cell-na">—</span>
+                    }
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="dateDepot">
+                  <th mat-header-cell *matHeaderCellDef>Date de dépôt</th>
+                  <td mat-cell *matCellDef="let j">{{ j.dateDepot | date:'dd/MM/yyyy' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="statut">
+                  <th mat-header-cell *matHeaderCellDef>Statut</th>
+                  <td mat-cell *matCellDef="let j">
+                    <span class="statut-chip" [ngClass]="statutClass(j.statut)">{{ statutLabel(j.statut) }}</span>
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="commentaire">
+                  <th mat-header-cell *matHeaderCellDef>Commentaire</th>
+                  <td mat-cell *matCellDef="let j">{{ j.commentaireValidation ?? '—' }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>Actions</th>
+                  <td mat-cell *matCellDef="let j">{{ j.statut === StatutJustificatif.EN_ATTENTE ? 'À traiter' : 'Traité' }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+            </div>
+          }
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-card>
+</div>

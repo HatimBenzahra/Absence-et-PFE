@@ -90,6 +90,22 @@ public class JustificatifService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<JustificatifDTO> getAllJustificatifs() {
+        return justificatifRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<JustificatifDTO> getAllJustificatifsAValider() {
+        return justificatifRepository.findByStatut(StatutJustificatif.EN_ATTENTE)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     private JustificatifDTO toDTO(Justificatif justificatif) {
         return JustificatifDTO.builder()
                 .id(justificatif.getId())

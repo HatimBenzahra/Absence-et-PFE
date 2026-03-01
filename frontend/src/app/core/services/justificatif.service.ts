@@ -22,6 +22,14 @@ export class JustificatifService {
     return this.http.get<Justificatif[]>(`${this.apiUrl}/a-valider`);
   }
 
+  getAllJustificatifs(): Observable<Justificatif[]> {
+    return this.http.get<Justificatif[]>(`${this.apiUrl}/tous`);
+  }
+
+  getAllAValider(): Observable<Justificatif[]> {
+    return this.http.get<Justificatif[]>(`${this.apiUrl}/tous/a-valider`);
+  }
+
   valider(id: number, accepter: boolean, commentaire?: string): Observable<Justificatif> {
     const params: any = { accepter };
     if (commentaire) {

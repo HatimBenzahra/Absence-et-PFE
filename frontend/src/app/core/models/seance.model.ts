@@ -10,10 +10,11 @@ export interface Seance {
 }
 
 export enum TypeSeance {
-  COURS = 'COURS',
+  CM = 'CM',
   TD = 'TD',
   TP = 'TP',
-  EXAMEN = 'EXAMEN'
+  EXAMEN = 'EXAMEN',
+  SOUTENANCE = 'SOUTENANCE'
 }
 
 export interface SeanceCreate {
@@ -23,4 +24,12 @@ export interface SeanceCreate {
   dateHeureFin: string;
   groupe?: string;
   salle?: string;
+}
+
+export interface EnseignantOption {
+  id: number;
+  nom: string;
+  prenom: string;
+  email: string;
+  role: string;
 }

@@ -38,5 +38,6 @@ public class RegisterRequest {
     private String departement;
     private String grade;
 
+    private String service;
     private String fonction;
 }

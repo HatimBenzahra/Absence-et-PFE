@@ -1,0 +1,404 @@
+// ─── Brand tokens ────────────────────────────────────────────────────────────────
+$burgundy:      #6d1d4a;
+$burgundy-dark: #4a1233;
+$teal:          #0097c4;
+$text-primary:  #1e293b;
+$text-muted:    #64748b;
+$border:        #e2e8f0;
+$surface:       #fff;
+
+// ─── Page wrapper ──────────────────────────────────────────────────────────
+.edt-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+}
+
+// ─── Page Header (exact spec) ─────────────────────────────────────────────────
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px;
+  background:
+    radial-gradient(circle at top right, rgba(0, 151, 196, 0.18), transparent 50%),
+    linear-gradient(135deg, $burgundy-dark 0%, $burgundy 50%, #8b2960 100%);
+  border-radius: 20px;
+  color: #fff;
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.15);
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 28px;
+      width: 28px;
+      height: 28px;
+      color: #fff;
+    }
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.3px;
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.82);
+    line-height: 1.5;
+  }
+}
+
+// ─── Loading ─────────────────────────────────────────────────────────────────
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 64px 24px;
+
+  .loading-text {
+    color: $text-muted;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  mat-progress-spinner {
+    --mdc-circular-progress-active-indicator-color: #{$burgundy};
+  }
+}
+
+// ─── Controls bar ──────────────────────────────────────────────────────────
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.nav-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-btn {
+  color: $text-primary;
+}
+
+.today-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: $teal;
+  border-color: $teal;
+  border-radius: 10px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.week-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: $text-primary;
+  letter-spacing: -0.2px;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.legend-pill {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+
+  &.legend-cm         { background: #0097c4; }
+  &.legend-td         { background: #15803d; }
+  &.legend-tp         { background: #d97706; }
+  &.legend-examen     { background: #dc2626; }
+  &.legend-soutenance { background: $burgundy; }
+}
+
+// ─── Calendar card ─────────────────────────────────────────────────────────
+.calendar-card {
+  border: 1px solid $border;
+  border-radius: 16px;
+  overflow: hidden;
+  background: $surface;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+// ─── Calendar grid ─────────────────────────────────────────────────────────
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 60px repeat(6, minmax(90px, 1fr));
+  grid-template-rows: auto repeat(11, 60px);
+  overflow-x: auto;
+}
+
+// Corner (top-left gutter)
+.grid-corner {
+  grid-row: 1;
+  grid-column: 1;
+  background: #f8fafc;
+  border-bottom: 2px solid $border;
+  border-right: 1px solid $border;
+}
+
+// Day header cells
+.grid-day-header {
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 8px;
+  background: #f8fafc;
+  border-bottom: 2px solid $border;
+  border-right: 1px solid $border;
+  text-align: center;
+
+  &:last-child { border-right: none; }
+
+  &.today {
+    background: rgba(0, 151, 196, 0.06);
+  }
+
+  &.today .day-name { color: $teal; }
+
+  .day-name {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: $text-muted;
+  }
+
+  .day-date {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    &--today {
+      background: $teal;
+      color: #fff;
+      font-size: 15px;
+    }
+  }
+}
+
+// Time labels
+.grid-time {
+  grid-column: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 4px 8px 0 0;
+  font-size: 11px;
+  font-weight: 600;
+  color: $text-muted;
+  border-right: 1px solid $border;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc;
+  user-select: none;
+}
+
+// Background grid cells
+.grid-cell {
+  border-right: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+
+  &:last-child { border-right: none; }
+
+  &.today-col {
+    background: rgba(0, 151, 196, 0.025);
+  }
+}
+
+// ─── Events overlay ───────────────────────────────────────────────────────────
+.day-events-container {
+  position: relative;
+  pointer-events: none;
+  z-index: 2;
+  border-right: 1px solid #f1f5f9;
+
+  &:last-child { border-right: none; }
+
+  &.today-col {
+    background: rgba(0, 151, 196, 0.025);
+  }
+}
+
+.event-block {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  border-radius: 6px;
+  overflow: hidden;
+  pointer-events: auto;
+  cursor: default;
+  background-color: var(--event-color, #64748b);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.15),
+    inset 3px 0 0 rgba(0, 0, 0, 0.2);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  z-index: 1;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.2),
+      inset 3px 0 0 rgba(0, 0, 0, 0.2);
+    z-index: 10;
+  }
+
+  .event-inner {
+    padding: 5px 7px;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .event-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .event-type-badge {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    padding: 1px 5px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .event-time {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .event-matiere {
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.25;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin: 0;
+  }
+
+  .event-detail {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.82);
+    overflow: hidden;
+    flex-shrink: 0;
+    margin: 0;
+
+    span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .detail-icon {
+      font-size: 11px;
+      width: 11px;
+      height: 11px;
+      flex-shrink: 0;
+    }
+  }
+}
+
+// ─── Empty state ───────────────────────────────────────────────────────────────
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 72px 24px;
+
+  .empty-icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: rgba(109, 29, 74, 0.08);
+
+    mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: $burgundy;
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: $text-primary;
+    margin: 0;
+  }
+
+  p {
+    font-size: 14px;
+    color: $text-muted;
+    max-width: 360px;
+    line-height: 1.6;
+    margin: 0;
+  }
+}

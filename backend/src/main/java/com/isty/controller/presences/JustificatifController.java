@@ -33,7 +33,7 @@ public class JustificatifController {
     }
 
     @PutMapping("/{id}/valider")
-    @PreAuthorize("hasRole('ENSEIGNANT')")
+    @PreAuthorize("hasRole('ENSEIGNANT') or hasRole('SECRETARIAT')")
     public ResponseEntity<JustificatifDTO> validerJustificatif(
             @PathVariable Long id,
             @RequestParam boolean accepter,
@@ -53,5 +53,17 @@ public class JustificatifController {
     public ResponseEntity<List<JustificatifDTO>> getMesJustificatifs(
             @AuthenticationPrincipal Utilisateur utilisateur) {
         return ResponseEntity.ok(justificatifService.getMesJustificatifs(utilisateur.getId()));
+    }
+
+    @GetMapping("/tous")
+    @PreAuthorize("hasRole('SECRETARIAT')")
+    public ResponseEntity<List<JustificatifDTO>> getAllJustificatifs() {
+        return ResponseEntity.ok(justificatifService.getAllJustificatifs());
+    }
+
+    @GetMapping("/tous/a-valider")
+    @PreAuthorize("hasRole('SECRETARIAT')")
+    public ResponseEntity<List<JustificatifDTO>> getAllJustificatifsAValider() {
+        return ResponseEntity.ok(justificatifService.getAllJustificatifsAValider());
     }
 }

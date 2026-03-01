@@ -1,0 +1,132 @@
+<div class="edt-page">
+
+  <!-- ─── Page Header ─────────────────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="page-header__icon">
+      <mat-icon>calendar_month</mat-icon>
+    </div>
+    <div>
+      <h1 class="page-header__title">Mon emploi du temps</h1>
+      <p class="page-header__subtitle">Consultez votre planning de cours hebdomadaire</p>
+    </div>
+  </header>
+
+  <!-- ─── Loading ─────────────────────────────────────────────────────────── -->
+  @if (loading) {
+    <div class="loading-container">
+      <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
+      <p class="loading-text">Chargement de l'emploi du temps…</p>
+    </div>
+  }
+
+  @if (!loading) {
+
+    <!-- ─── Controls Bar ──────────────────────────────────────────────────── -->
+    <div class="calendar-controls">
+      <div class="nav-group">
+        <button mat-icon-button class="nav-btn" (click)="prevWeek()" aria-label="Semaine précédente">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button mat-stroked-button class="today-btn" (click)="goToday()">
+          <mat-icon>today</mat-icon>
+          Aujourd'hui
+        </button>
+        <button mat-icon-button class="nav-btn" (click)="nextWeek()" aria-label="Semaine suivante">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+      <span class="week-label">{{ weekLabel }}</span>
+      <div class="legend">
+        <span class="legend-pill legend-cm">CM</span>
+        <span class="legend-pill legend-td">TD</span>
+        <span class="legend-pill legend-tp">TP</span>
+        <span class="legend-pill legend-examen">Examen</span>
+        <span class="legend-pill legend-soutenance">Soutenance</span>
+      </div>
+    </div>
+
+    <!-- ─── Calendar Card ────────────────────────────────────────────────── -->
+    <div class="calendar-card">
+
+      @if (events.length === 0) {
+        <!-- Empty State -->
+        <div class="empty-state">
+          <div class="empty-icon-wrapper">
+            <mat-icon>event_busy</mat-icon>
+          </div>
+          <h3>Aucune séance cette semaine</h3>
+          <p>Aucun cours planifié pour la semaine sélectionnée.</p>
+        </div>
+      } @else {
+
+        <!-- Calendar Grid -->
+        <div class="calendar-grid">
+
+          <!-- Header: corner + day columns -->
+          <div class="grid-corner"></div>
+          @for (day of days; track day.date) {
+            <div class="grid-day-header" [class.today]="day.isToday">
+              <span class="day-name">{{ day.label }}</span>
+              <span class="day-date" [class.day-date--today]="day.isToday">
+                {{ day.date.getDate() }}
+              </span>
+            </div>
+          }
+
+          <!-- Time rows + background cells -->
+          @for (hour of hours; track hour; let i = $index) {
+            <div class="grid-time" [style.grid-row]="i + 2">
+              {{ hour < 10 ? '0' + hour : hour }}:00
+            </div>
+            @for (day of days; track day.date; let j = $index) {
+              <div
+                class="grid-cell"
+                [class.today-col]="day.isToday"
+                [style.grid-row]="i + 2"
+                [style.grid-column]="j + 2">
+              </div>
+            }
+          }
+
+          <!-- Event blocks per day column -->
+          @for (day of days; track day.date; let j = $index) {
+            <div
+              class="day-events-container"
+              [class.today-col]="day.isToday"
+              [style.grid-column]="j + 2"
+              [style.grid-row]="'2 / ' + (TOTAL_HOURS + 2)">
+              @for (ev of eventsForDay(j); track ev.seance.id) {
+                <div
+                  class="event-block"
+                  [style.top.%]="ev.topPercent"
+                  [style.height.%]="ev.heightPercent"
+                  [style.--event-color]="ev.color"
+                  [attr.title]="ev.seance.matiere + ' · ' + ev.seance.salle">
+                  <div class="event-inner">
+                    <div class="event-top-row">
+                      <span class="event-type-badge">{{ ev.label }}</span>
+          <span class="event-time">{{ formatTime(ev.seance.dateHeureDebut) }} – {{ formatTime(ev.seance.dateHeureFin) }}</span>
+                    </div>
+                    <p class="event-matiere">{{ ev.seance.matiere }}</p>
+                    <p class="event-detail">
+                      <mat-icon class="detail-icon">room</mat-icon>
+                      <span>{{ ev.seance.salle }}</span>
+                    </p>
+                    <p class="event-detail">
+                      <mat-icon class="detail-icon">person</mat-icon>
+                      <span>{{ ev.seance.enseignantNom }}</span>
+                    </p>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+        </div>
+      }
+
+    </div>
+
+  }
+
+</div>

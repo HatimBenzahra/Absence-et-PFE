@@ -17,6 +17,8 @@ public interface PresenceRepository extends JpaRepository<Presence, Long> {
 
     List<Presence> findBySeanceId(Long seanceId);
 
+    List<Presence> findBySeance_Groupe(String groupe);
+
     Optional<Presence> findByEtudiantIdAndSeanceId(Long etudiantId, Long seanceId);
 
     List<Presence> findByEtudiantIdAndStatut(Long etudiantId, StatutPresence statut);

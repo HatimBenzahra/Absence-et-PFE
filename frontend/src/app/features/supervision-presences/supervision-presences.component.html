@@ -1,0 +1,83 @@
+<div class="validation-container">
+  <mat-card class="page-card">
+    <div class="card-header">
+      <div class="header-content">
+        <div class="header-icon">
+          <mat-icon>visibility</mat-icon>
+        </div>
+        <div>
+          <h1 class="page-title">Supervision des présences</h1>
+          <p class="page-subtitle">Vue globale de l'assiduité de tous les étudiants</p>
+        </div>
+      </div>
+      <div class="header-badge" *ngIf="!loading">
+        <span class="badge-count">{{ presences.length }}</span>
+        <span class="badge-label">présences</span>
+      </div>
+    </div>
+
+    <mat-card-content class="card-body">
+      <div class="loading-wrapper" *ngIf="loading">
+        <mat-spinner diameter="48" color="accent"></mat-spinner>
+        <p class="loading-text">Chargement des présences...</p>
+      </div>
+
+      <div class="empty-state" *ngIf="!loading && presences.length === 0">
+        <div class="empty-icon">
+          <mat-icon>inbox</mat-icon>
+        </div>
+        <p class="empty-message">Aucune présence disponible</p>
+        <p class="empty-hint">Aucun enregistrement de présence n'a encore été remonté.</p>
+      </div>
+
+      <div class="table-wrapper" *ngIf="!loading && presences.length > 0">
+        <table mat-table [dataSource]="presences" class="validation-table">
+
+          <ng-container matColumnDef="etudiantNom">
+            <th mat-header-cell *matHeaderCellDef>Étudiant</th>
+            <td mat-cell *matCellDef="let presence" class="etudiant-cell">{{ presence.etudiantNom }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="etudiantNumero">
+            <th mat-header-cell *matHeaderCellDef>Numéro</th>
+            <td mat-cell *matCellDef="let presence" class="numero-cell">{{ presence.etudiantNumero }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="statut">
+            <th mat-header-cell *matHeaderCellDef>Statut</th>
+            <td mat-cell *matCellDef="let presence" class="statut-cell">
+              <mat-chip class="status-chip" [ngClass]="statutClass(presence.statut)">
+                {{ statutLabel(presence.statut) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="modeSaisie">
+            <th mat-header-cell *matHeaderCellDef>Mode</th>
+            <td mat-cell *matCellDef="let presence" class="mode-cell">{{ modeLabel(presence.modeSaisie) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="horodatage">
+            <th mat-header-cell *matHeaderCellDef>Horodatage</th>
+            <td mat-cell *matCellDef="let presence" class="date-cell">
+              {{ presence.horodatage | date:'dd/MM/yyyy HH:mm' }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="aJustificatif">
+            <th mat-header-cell *matHeaderCellDef>Justificatif</th>
+            <td mat-cell *matCellDef="let presence" class="justificatif-cell">
+              <mat-chip [ngClass]="presence.aJustificatif ? 'proof-chip proof-chip--yes' : 'proof-chip proof-chip--no'">
+                <mat-icon>{{ presence.aJustificatif ? 'check_circle' : 'cancel' }}</mat-icon>
+                {{ presence.aJustificatif ? 'Oui' : 'Non' }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

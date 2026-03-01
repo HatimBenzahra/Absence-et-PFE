@@ -5,9 +5,11 @@ import com.isty.dto.presences.SeanceDTO;
 import com.isty.dto.presences.SeanceQRDTO;
 import com.isty.entity.presences.Seance;
 import com.isty.entity.user.Enseignant;
+import com.isty.entity.user.Etudiant;
 import com.isty.exception.ResourceNotFoundException;
 import com.isty.repository.presences.SeanceRepository;
 import com.isty.repository.user.EnseignantRepository;
+import com.isty.repository.user.EtudiantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,7 @@ public class SeanceService {
 
     private final SeanceRepository seanceRepository;
     private final EnseignantRepository enseignantRepository;
+    private final EtudiantRepository etudiantRepository;
 
     private static final int QR_VALIDITY_MINUTES = 30;
 
@@ -84,8 +87,29 @@ public class SeanceService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<SeanceDTO> getSeancesEtudiant(Long etudiantId) {
+        Etudiant etudiant = etudiantRepository.findById(etudiantId)
+                .orElseThrow(() -> new ResourceNotFoundException("Etudiant non trouve avec l'id: " + etudiantId));
+        String groupe = etudiant.getGroupe();
+        if (groupe == null || groupe.isBlank()) {
+            return List.of();
+        }
+        return seanceRepository.findByGroupe(groupe)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     public List<SeanceDTO> getSeancesParPeriode(LocalDateTime debut, LocalDateTime fin) {
         return seanceRepository.findByDateHeureDebutBetween(debut, fin)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+    @Transactional(readOnly = true)
+    public List<SeanceDTO> getAllSeances() {
+        return seanceRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());

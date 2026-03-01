@@ -61,6 +61,7 @@ public class CandidatureService {
         return toDTO(candidature);
     }
 
+    @Transactional(readOnly = true)
     public List<CandidatureDTO> getMesCandidatures(Long etudiantId) {
         return candidatureRepository.findByEtudiantIdOrderByRangPreferenceAsc(etudiantId)
                 .stream()
@@ -68,6 +69,7 @@ public class CandidatureService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<CandidatureDTO> getCandidaturesForSujet(Long sujetId) {
         return candidatureRepository.findBySujetId(sujetId)
                 .stream()
@@ -91,12 +93,43 @@ public class CandidatureService {
         candidatureRepository.delete(candidature);
     }
 
+    @Transactional
+    public CandidatureDTO accepterCandidature(Long candidatureId) {
+        Candidature candidature = candidatureRepository.findById(candidatureId)
+                .orElseThrow(() -> new ResourceNotFoundException("Candidature non trouvee avec l'id: " + candidatureId));
+
+        if (candidature.getStatut() != StatutCandidature.EN_ATTENTE) {
+            throw new BadRequestException("Seules les candidatures en attente peuvent etre acceptees");
+        }
+
+        candidature.setStatut(StatutCandidature.ACCEPTEE);
+        candidature = candidatureRepository.save(candidature);
+        return toDTO(candidature);
+    }
+
+    @Transactional
+    public CandidatureDTO refuserCandidature(Long candidatureId) {
+        Candidature candidature = candidatureRepository.findById(candidatureId)
+                .orElseThrow(() -> new ResourceNotFoundException("Candidature non trouvee avec l'id: " + candidatureId));
+
+        if (candidature.getStatut() != StatutCandidature.EN_ATTENTE) {
+            throw new BadRequestException("Seules les candidatures en attente peuvent etre refusees");
+        }
+
+        candidature.setStatut(StatutCandidature.REFUSEE);
+        candidature = candidatureRepository.save(candidature);
+        return toDTO(candidature);
+    }
+
     private CandidatureDTO toDTO(Candidature candidature) {
         return CandidatureDTO.builder()
                 .id(candidature.getId())
                 .sujetId(candidature.getSujet().getId())
                 .sujetTitre(candidature.getSujet().getTitre())
+                .etudiantId(candidature.getEtudiant().getId())
+                .etudiantNom(candidature.getEtudiant().getNom() + " " + candidature.getEtudiant().getPrenom())
                 .rangPreference(candidature.getRangPreference())
+                .motivation(candidature.getMotivation())
                 .statut(candidature.getStatut())
                 .dateCandidature(candidature.getDateCandidature())
                 .build();

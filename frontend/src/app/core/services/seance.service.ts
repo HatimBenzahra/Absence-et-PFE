@@ -18,11 +18,31 @@ export class SeanceService {
     return this.http.post<Seance>(this.apiUrl, seance);
   }
 
+  getAllSeances(): Observable<Seance[]> {
+    return this.http.get<Seance[]>(`${this.apiUrl}/toutes`);
+  }
+
+  getSeancesByEnseignant(enseignantId: number): Observable<Seance[]> {
+    return this.http.get<Seance[]>(`${this.apiUrl}/enseignant/${enseignantId}`);
+  }
+
+  getEnseignants(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/enseignants`);
+  }
+
+  createForEnseignant(seance: SeanceCreate, enseignantId: number): Observable<Seance> {
+    return this.http.post<Seance>(this.apiUrl, seance, { params: { enseignantId: enseignantId.toString() } });
+  }
+
   generateQrCode(id: number): Observable<{ tokenQR: string }> {
     return this.http.post<{ tokenQR: string }>(`${this.apiUrl}/${id}/qr`, {});
   }
 
   getSeancesByGroupe(groupe: string): Observable<Seance[]> {
     return this.http.get<Seance[]>(`${this.apiUrl}/groupe/${groupe}`);
+  }
+
+  getMonEmploiDuTemps(): Observable<Seance[]> {
+    return this.http.get<Seance[]>(`${this.apiUrl}/mon-emploi-du-temps`);
   }
 }

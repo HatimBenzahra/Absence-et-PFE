@@ -104,6 +104,20 @@ public class PresenceService {
                 .collect(Collectors.toList());
     }
 
+    public List<PresenceDTO> getAllPresences() {
+        return presenceRepository.findAll()
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<PresenceDTO> getPresencesParGroupe(String groupe) {
+        return presenceRepository.findBySeance_Groupe(groupe)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
     private StatutPresence determinerStatutPresence(Seance seance, LocalDateTime horodatage) {
         if (horodatage.isAfter(seance.getDateHeureDebut().plusMinutes(15))) {
             return StatutPresence.RETARD;

@@ -41,7 +41,7 @@ export class CandidaturesGestionComponent implements OnInit {
   isLoadingCandidatures = false;
   hasSelected = false;
 
-  displayedColumns = ['sujetTitre', 'rangPreference', 'statut', 'dateCandidature'];
+  displayedColumns = ['etudiantNom', 'rangPreference', 'statut', 'dateCandidature', 'actions'];
 
   readonly StatutCandidature = StatutCandidature;
 
@@ -86,6 +86,34 @@ export class CandidaturesGestionComponent implements OnInit {
       error: () => {
         this.notification.error('Impossible de charger les candidatures pour ce sujet.');
         this.isLoadingCandidatures = false;
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  onAccepter(candidature: Candidature): void {
+    this.candidatureService.accepter(candidature.id).subscribe({
+      next: (updated) => {
+        candidature.statut = updated.statut;
+        this.notification.success(`Candidature de ${candidature.etudiantNom} acceptée.`);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.error('Impossible d\'accepter cette candidature.');
+        this.cdr.markForCheck();
+      },
+    });
+  }
+
+  onRefuser(candidature: Candidature): void {
+    this.candidatureService.refuser(candidature.id).subscribe({
+      next: (updated) => {
+        candidature.statut = updated.statut;
+        this.notification.success(`Candidature de ${candidature.etudiantNom} refusée.`);
+        this.cdr.markForCheck();
+      },
+      error: () => {
+        this.notification.error('Impossible de refuser cette candidature.');
         this.cdr.markForCheck();
       },
     });

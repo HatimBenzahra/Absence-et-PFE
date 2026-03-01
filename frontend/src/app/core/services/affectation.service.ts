@@ -24,6 +24,10 @@ export class AffectationService {
     return this.http.get<Affectation[]>(`${this.apiUrl}/mes-encadrements`);
   }
 
+  getAllAffectations(): Observable<Affectation[]> {
+    return this.http.get<Affectation[]>(`${this.apiUrl}/toutes`);
+  }
+
   affecterManuel(request: AffectationManuelleRequest): Observable<Affectation> {
     let params = new HttpParams()
       .set('etudiantId', request.etudiantId.toString())

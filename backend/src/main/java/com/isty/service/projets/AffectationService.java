@@ -153,14 +153,24 @@ public class AffectationService {
                 });
     }
 
+    @Transactional(readOnly = true)
     public AffectationDTO getMonAffectation(Long etudiantId) {
         AffectationPFE affectation = affectationRepository.findByEtudiantId(etudiantId)
                 .orElseThrow(() -> new ResourceNotFoundException("Aucune affectation trouvee pour cet etudiant"));
         return toDTO(affectation);
     }
 
+    @Transactional(readOnly = true)
     public List<AffectationDTO> getMesEncadrements(Long enseignantId) {
         return affectationRepository.findByEncadrantId(enseignantId)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public List<AffectationDTO> getAllAffectations() {
+        return affectationRepository.findAll()
                 .stream()
                 .map(this::toDTO)
                 .collect(Collectors.toList());
