@@ -297,3 +297,73 @@ $surface: #fff;
     line-height: 1.5;
   }
 }
+
+// ─── Mobile ──────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .page-header {
+    padding: 20px 16px;
+    border-radius: 14px;
+    gap: 12px;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__subtitle {
+      font-size: 13px;
+    }
+  }
+
+  .section-card {
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-field--small {
+    flex: 1;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .candidatures-table {
+    th.mat-mdc-header-cell {
+      padding: 10px 10px;
+      font-size: 11px;
+    }
+
+    td.mat-mdc-cell {
+      padding: 12px 10px;
+      font-size: 13px;
+    }
+
+    // Hide date column on mobile — not essential
+    .mat-column-dateCandidature {
+      display: none;
+    }
+  }
+
+  .empty-state,
+  .loading-state {
+    padding: 32px 16px;
+  }
+}

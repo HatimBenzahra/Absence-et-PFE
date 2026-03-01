@@ -46,3 +46,25 @@ a {
     padding: 0 !important;
   }
 }
+
+/* ─── Mobile-first responsive utilities ──────────────────────── */
+
+// Smooth scrolling on touch devices
+* { -webkit-tap-highlight-color: transparent; }
+
+@media (max-width: 600px) {
+  // Global mobile form fields — full width
+  mat-form-field { width: 100% !important; }
+
+  // Touch-friendly minimum tap targets
+  button, a { min-height: 44px; }
+
+  // Reduce Material card padding on mobile
+  .mat-mdc-card { margin-bottom: 0; }
+
+  // Smoother table scrolling
+  .table-container,
+  .table-wrapper {
+    -webkit-overflow-scrolling: touch;
+  }
+}

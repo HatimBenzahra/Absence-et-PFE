@@ -37,6 +37,15 @@ public class SeanceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(seance);
     }
 
+    @PostMapping("/ma-seance")
+    @PreAuthorize("hasRole('ENSEIGNANT')")
+    public ResponseEntity<SeanceDTO> creerMaSeance(
+            @Valid @RequestBody SeanceCreateDTO dto,
+            @AuthenticationPrincipal Utilisateur utilisateur) {
+        SeanceDTO seance = seanceService.creerSeance(dto, utilisateur.getId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(seance);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<SeanceDTO> getSeanceById(@PathVariable Long id) {
         return ResponseEntity.ok(seanceService.getSeanceById(id));

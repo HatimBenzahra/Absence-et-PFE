@@ -263,3 +263,67 @@ $teal: #0097c4;
     color: $burgundy;
   }
 }
+
+// ─── Mobile ──────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .header-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+
+    .header-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+    }
+  }
+
+  .empty-state {
+    padding: 48px 16px;
+
+    .empty-icon-wrapper {
+      width: 56px;
+      height: 56px;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  .presences-table {
+    th.mat-mdc-header-cell,
+    td.mat-mdc-cell {
+      padding: 12px;
+
+      &:first-child { padding-left: 12px; }
+      &:last-child  { padding-right: 12px; }
+    }
+
+    // Hide 'Mode' column on mobile — not essential
+    .mat-column-modeSaisie {
+      display: none;
+    }
+  }
+
+  .statut-chip {
+    font-size: 10px !important;
+    height: 24px !important;
+    padding: 0 8px !important;
+  }
+}

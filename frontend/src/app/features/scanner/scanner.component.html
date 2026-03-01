@@ -1,22 +1,77 @@
 <div class="scanner-page">
 
+  <!-- ═══ Page Header ═══ -->
   <div class="page-header">
     <div class="header-icon">
-      <span class="qr-icon">&#9638;</span>
+      <mat-icon>qr_code_scanner</mat-icon>
     </div>
     <h1 class="page-title">Pointage QR</h1>
-    <p class="page-subtitle">Saisissez le code QR fourni par votre enseignant pour enregistrer votre présence.</p>
+    <p class="page-subtitle">Scannez le QR code affiché en salle pour enregistrer votre présence.</p>
   </div>
 
-  <mat-card class="scanner-card">
-    <mat-card-header>
-      <mat-card-title>Code QR de séance</mat-card-title>
-      <mat-card-subtitle>Entrez le token affiché en salle</mat-card-subtitle>
-    </mat-card-header>
+  <!-- ═══ State: Initial (scan button) ═══ -->
+  @if (!cameraActive && !showManualInput && !result) {
+    <div class="action-zone">
+      @if (cameraSupported) {
+        <button class="scan-btn" (click)="startCamera()" [disabled]="isLoading">
+          <div class="scan-btn__icon">
+            <mat-icon>photo_camera</mat-icon>
+          </div>
+          <span class="scan-btn__label">Scanner le QR code</span>
+          <span class="scan-btn__hint">Utilisez la caméra de votre téléphone</span>
+        </button>
+      }
 
-    <mat-card-content>
-      <form [formGroup]="form" (ngSubmit)="submit()" class="scanner-form">
+      <button class="manual-link" (click)="showManualInput = true">
+        <mat-icon>keyboard</mat-icon>
+        Saisir le code manuellement
+      </button>
+    </div>
+  }
 
+  <!-- ═══ State: Camera Active ═══ -->
+  @if (cameraActive) {
+    <div class="camera-zone">
+      <div class="camera-viewport">
+        <video #videoEl autoplay muted playsinline class="camera-feed"></video>
+        <canvas #canvasEl class="camera-canvas"></canvas>
+        <div class="scan-overlay">
+          <div class="scan-frame">
+            <span class="corner corner--tl"></span>
+            <span class="corner corner--tr"></span>
+            <span class="corner corner--bl"></span>
+            <span class="corner corner--br"></span>
+          </div>
+        </div>
+        <p class="scan-hint">Placez le QR code dans le cadre</p>
+      </div>
+      <button class="cancel-btn" (click)="stopCamera(); showManualInput = true">
+        <mat-icon>close</mat-icon>
+        Annuler le scan
+      </button>
+    </div>
+  }
+
+  <!-- ═══ Camera Error ═══ -->
+  @if (cameraError) {
+    <div class="camera-error">
+      <mat-icon>videocam_off</mat-icon>
+      <p>{{ cameraError }}</p>
+    </div>
+  }
+
+  <!-- ═══ State: Manual Input ═══ -->
+  @if (showManualInput && !result) {
+    <mat-card class="manual-card">
+      <div class="manual-card__header">
+        <mat-icon>keyboard</mat-icon>
+        <div>
+          <h2>Saisie manuelle</h2>
+          <p>Entrez le token affiché en salle</p>
+        </div>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="manual-form">
         <mat-form-field appearance="outline" class="token-field">
           <mat-label>Token QR</mat-label>
           <input
@@ -25,7 +80,6 @@
             placeholder="Ex : ABC-2026-XY9Z"
             autocomplete="off"
             spellcheck="false"
-            [disabled]="isLoading"
           />
           @if (tokenQR?.hasError('required') && tokenQR?.touched) {
             <mat-error>Le token QR est obligatoire</mat-error>
@@ -35,76 +89,67 @@
           }
         </mat-form-field>
 
-        <button
-          mat-flat-button
-          type="submit"
-          class="pointer-btn"
-          [disabled]="form.invalid || isLoading"
-        >
+        <button mat-flat-button type="submit" class="submit-btn" [disabled]="form.invalid || isLoading">
           @if (isLoading) {
-            <span class="btn-inner">
-              <span class="spinner"></span>
-              Enregistrement…
-            </span>
+            <mat-progress-spinner diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span>Enregistrement…</span>
           } @else {
-            <span class="btn-inner">
-              <span class="btn-icon">&#10003;</span>
-              Pointer ma présence
-            </span>
+            <mat-icon>check</mat-icon>
+            <span>Pointer ma présence</span>
           }
         </button>
-
       </form>
-    </mat-card-content>
-  </mat-card>
 
+      @if (cameraSupported) {
+        <button class="back-to-scan" (click)="showManualInput = false; cameraError = null">
+          <mat-icon>qr_code_scanner</mat-icon>
+          Retour au scanner
+        </button>
+      }
+    </mat-card>
+  }
+
+  <!-- ═══ State: Result ═══ -->
   @if (result) {
     <mat-card class="result-card">
-      <mat-card-header>
-        <mat-card-title class="result-title">Présence enregistrée</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="result-grid">
-
-          <div class="result-row">
-            <span class="result-label">Étudiant</span>
-            <span class="result-value">{{ result.etudiantNom }}</span>
-          </div>
-
-          <div class="result-row">
-            <span class="result-label">Numéro</span>
-            <span class="result-value mono">{{ result.etudiantNumero }}</span>
-          </div>
-
-          <div class="result-row">
-            <span class="result-label">Statut</span>
-            <span class="result-value">
-              <span class="statut-badge" [class]="'statut-' + result.statut.toLowerCase()">
-                {{ statutLabel(result.statut) }}
-              </span>
-            </span>
-          </div>
-
-          <div class="result-row">
-            <span class="result-label">Mode</span>
-            <span class="result-value">{{ result.modeSaisie }}</span>
-          </div>
-
-          <div class="result-row">
-            <span class="result-label">Horodatage</span>
-            <span class="result-value mono">{{ formatDate(result.horodatage) }}</span>
-          </div>
-
-          @if (result.aJustificatif) {
-            <div class="result-row">
-              <span class="result-label">Justificatif</span>
-              <span class="result-value">Oui</span>
-            </div>
-          }
-
+      <div class="result-card__header">
+        <div class="result-check">
+          <mat-icon>check_circle</mat-icon>
         </div>
-      </mat-card-content>
+        <h2>Présence enregistrée</h2>
+      </div>
+      <div class="result-grid">
+        <div class="result-row">
+          <span class="result-label">Étudiant</span>
+          <span class="result-value">{{ result.etudiantNom }}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Numéro</span>
+          <span class="result-value mono">{{ result.etudiantNumero }}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Statut</span>
+          <span class="result-value">
+            <span class="statut-badge" [class]="'statut-' + result.statut.toLowerCase()">
+              {{ statutLabel(result.statut) }}
+            </span>
+          </span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Mode</span>
+          <span class="result-value">{{ result.modeSaisie }}</span>
+        </div>
+        <div class="result-row">
+          <span class="result-label">Horodatage</span>
+          <span class="result-value mono">{{ formatDate(result.horodatage) }}</span>
+        </div>
+      </div>
     </mat-card>
+
+    <button class="scan-again-btn" (click)="scanAgain()">
+      <mat-icon>replay</mat-icon>
+      Scanner à nouveau
+    </button>
   }
 
 </div>

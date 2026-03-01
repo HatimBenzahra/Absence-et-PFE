@@ -24,11 +24,24 @@
     <mat-card-content>
       <form [formGroup]="createForm" (ngSubmit)="onSubmit()" class="create-form">
 
+        <!-- Row 1: Matière + Type -->
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Matière</mat-label>
             <mat-icon matPrefix>menu_book</mat-icon>
-            <input matInput formControlName="matiere" placeholder="Ex: Mathématiques, Physique…">
+            <input
+              matInput
+              formControlName="matiere"
+              [matAutocomplete]="autoMatiere"
+              (input)="filterMatieres()"
+              (focus)="filterMatieres()"
+              placeholder="Ex: Mathématiques, Physique…"
+            >
+            <mat-autocomplete #autoMatiere="matAutocomplete">
+              @for (m of filteredMatieres; track m) {
+                <mat-option [value]="m">{{ m }}</mat-option>
+              }
+            </mat-autocomplete>
             @if (createForm.get('matiere')?.hasError('required') && createForm.get('matiere')?.touched) {
               <mat-error>La matière est requise</mat-error>
             }
@@ -50,26 +63,37 @@
           </mat-form-field>
         </div>
 
-        <div class="form-row">
+        <!-- Row 2: Date + Heure début + Heure fin -->
+        <div class="form-row form-row--3cols">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Date et heure de début</mat-label>
-            <mat-icon matPrefix>schedule</mat-icon>
-            <input matInput type="datetime-local" formControlName="dateHeureDebut">
-            @if (createForm.get('dateHeureDebut')?.hasError('required') && createForm.get('dateHeureDebut')?.touched) {
-              <mat-error>La date de début est requise</mat-error>
+            <mat-label>Date</mat-label>
+            <mat-icon matPrefix>calendar_today</mat-icon>
+            <input matInput type="date" formControlName="date">
+            @if (createForm.get('date')?.hasError('required') && createForm.get('date')?.touched) {
+              <mat-error>La date est requise</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Date et heure de fin</mat-label>
+            <mat-label>Heure de début</mat-label>
             <mat-icon matPrefix>schedule</mat-icon>
-            <input matInput type="datetime-local" formControlName="dateHeureFin">
-            @if (createForm.get('dateHeureFin')?.hasError('required') && createForm.get('dateHeureFin')?.touched) {
-              <mat-error>La date de fin est requise</mat-error>
+            <input matInput type="time" formControlName="heureDebut">
+            @if (createForm.get('heureDebut')?.hasError('required') && createForm.get('heureDebut')?.touched) {
+              <mat-error>L'heure de début est requise</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Heure de fin</mat-label>
+            <mat-icon matPrefix>schedule</mat-icon>
+            <input matInput type="time" formControlName="heureFin">
+            @if (createForm.get('heureFin')?.hasError('required') && createForm.get('heureFin')?.touched) {
+              <mat-error>L'heure de fin est requise</mat-error>
             }
           </mat-form-field>
         </div>
 
+        <!-- Row 3: Groupe + Salle -->
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
             <mat-label>Groupe <span class="optional-label">(optionnel)</span></mat-label>
@@ -104,6 +128,37 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <!-- ── Generated QR Code Display ─────────────────────────────── -->
+  @if (generatedToken) {
+    <mat-card class="qr-card">
+      <div class="qr-card__header">
+        <mat-icon>qr_code_2</mat-icon>
+        <div>
+          <h2 class="qr-card__title">QR Code — {{ generatedTokenSeanceMatiere }}</h2>
+          <p class="qr-card__subtitle">Séance #{{ generatedTokenSeanceId }} • Montrez ce QR code aux étudiants pour le pointage</p>
+        </div>
+      </div>
+
+      <div class="qr-card__body">
+        <img
+          [src]="qrCodeUrl"
+          alt="QR Code de la séance"
+          class="qr-card__image"
+          width="280"
+          height="280"
+        />
+        <div class="qr-card__token">
+          <span class="qr-card__token-label">Token</span>
+          <code class="qr-card__token-value">{{ generatedToken }}</code>
+        </div>
+        <p class="qr-card__hint">
+          <mat-icon>info_outline</mat-icon>
+          Les étudiants scannent ce QR code depuis leur espace « Scanner » pour valider leur présence.
+        </p>
+      </div>
+    </mat-card>
+  }
 
   <!-- ── Séances Table Section ─────────────────────────────────── -->
   <mat-card class="table-card">
@@ -177,7 +232,7 @@
                 <button
                   mat-stroked-button
                   class="qr-btn"
-                  (click)="generateQr(row)"
+                  (click)="generateQr(row); $event.stopPropagation()"
                   [disabled]="generatingQr === row.id"
                 >
                   @if (generatingQr === row.id) {
@@ -195,6 +250,9 @@
               mat-row
               *matRowDef="let row; columns: displayedColumns;"
               [class.active-row]="generatedTokenSeanceId === row.id"
+              [class.selected-row]="selectedSeance?.id === row.id"
+              class="clickable-row"
+              (click)="onSeanceClick(row)"
             ></tr>
 
           </table>
@@ -203,28 +261,97 @@
     </mat-card-content>
   </mat-card>
 
-  <!-- ── Generated QR Token Display ────────────────────────────── -->
-  @if (generatedToken) {
-    <mat-card class="token-card">
-      <mat-card-header>
-        <div mat-card-avatar class="card-avatar card-avatar--token">
-          <mat-icon>qr_code_2</mat-icon>
-        </div>
-        <mat-card-title>Token QR Code généré</mat-card-title>
-        <mat-card-subtitle>
-          Séance #{{ generatedTokenSeanceId }} — Communiquez ce token aux étudiants pour le pointage
-        </mat-card-subtitle>
-      </mat-card-header>
-
-      <mat-card-content>
-        <div class="token-display">
-          <div class="token-label">
-            <mat-icon>key</mat-icon>
-            <span>Token d'authentification</span>
+  <!-- ── Presence Detail Panel ────────────────────────────────── -->
+  @if (selectedSeance) {
+    <mat-card class="presence-panel">
+      <div class="presence-panel__header">
+        <div class="presence-panel__info">
+          <mat-icon>people</mat-icon>
+          <div>
+            <h2 class="presence-panel__title">
+              Présences — {{ selectedSeance.matiere }}
+            </h2>
+            <p class="presence-panel__subtitle">
+              {{ selectedSeance.dateHeureDebut | date:'dd/MM/yyyy' }} •
+              {{ selectedSeance.dateHeureDebut | date:'HH:mm' }} – {{ selectedSeance.dateHeureFin | date:'HH:mm' }}
+              @if (selectedSeance.groupe) { • Groupe {{ selectedSeance.groupe }} }
+            </p>
           </div>
-          <code class="token-value">{{ generatedToken }}</code>
         </div>
-      </mat-card-content>
+        <button mat-icon-button (click)="closePresencePanel()" class="close-btn">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      @if (loadingPresences) {
+        <div class="loading-state loading-state--sm">
+          <mat-progress-spinner mode="indeterminate" diameter="36"></mat-progress-spinner>
+          <p>Chargement…</p>
+        </div>
+      } @else if (selectedPresences.length === 0) {
+        <div class="empty-state empty-state--sm">
+          <mat-icon>person_off</mat-icon>
+          <p>Aucune présence enregistrée pour cette séance</p>
+        </div>
+      } @else {
+        <!-- Stats bar -->
+        <div class="presence-stats">
+          <div class="stat-pill stat-pill--present">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{ countByStatut('PRESENT') }} présent(s)</span>
+          </div>
+          <div class="stat-pill stat-pill--absent">
+            <mat-icon>cancel</mat-icon>
+            <span>{{ countByStatut('ABSENT') }} absent(s)</span>
+          </div>
+          <div class="stat-pill stat-pill--retard">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ countByStatut('RETARD') }} retard(s)</span>
+          </div>
+        </div>
+
+        <!-- Presence table -->
+        <div class="presence-table-wrapper">
+          <table mat-table [dataSource]="selectedPresences" class="presence-table">
+
+            <ng-container matColumnDef="etudiantNom">
+              <th mat-header-cell *matHeaderCellDef>Étudiant</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="student-name">{{ row.etudiantNom }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="etudiantNumero">
+              <th mat-header-cell *matHeaderCellDef>N° Étudiant</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="student-num">{{ row.etudiantNumero || '—' }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="statut">
+              <th mat-header-cell *matHeaderCellDef>Statut</th>
+              <td mat-cell *matCellDef="let row">
+                <span class="statut-badge" [ngClass]="statutClass(row.statut)">
+                  {{ statutLabel(row.statut) }}
+                </span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="modeSaisie">
+              <th mat-header-cell *matHeaderCellDef>Mode</th>
+              <td mat-cell *matCellDef="let row">{{ row.modeSaisie }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="horodatage">
+              <th mat-header-cell *matHeaderCellDef>Heure</th>
+              <td mat-cell *matCellDef="let row">{{ row.horodatage | date:'HH:mm' }}</td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="presenceColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: presenceColumns;"></tr>
+          </table>
+        </div>
+      }
     </mat-card>
   }
 

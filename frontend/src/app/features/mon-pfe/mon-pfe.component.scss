@@ -408,3 +408,92 @@ $radius-sm: 8px;
   }
 }
 
+
+// ─── Mobile ──────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .mon-pfe-page {
+    padding: 8px;
+    gap: 16px;
+  }
+
+  .page-header {
+    gap: 10px;
+
+    &__icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    &__title {
+      font-size: 18px;
+    }
+
+    &__subtitle {
+      font-size: 12px;
+    }
+  }
+
+  .affectation-card {
+    padding: 20px !important;
+    border-radius: 14px !important;
+
+    &__title {
+      font-size: 17px;
+    }
+
+    &__meta {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+
+  .section-header {
+    &__title {
+      font-size: 15px;
+    }
+  }
+
+  .table-card {
+    border-radius: 12px !important;
+  }
+
+  .livrables-table {
+    .mat-mdc-header-cell {
+      padding: 10px 12px;
+      font-size: 10px;
+    }
+
+    .mat-mdc-cell {
+      padding: 12px;
+    }
+  }
+
+  .submit-card {
+    padding: 16px !important;
+    border-radius: 12px !important;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .empty-state {
+    padding: 40px 16px;
+
+    &__icon {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .livrables-empty {
+    padding: 16px;
+    font-size: 13px;
+  }
+}

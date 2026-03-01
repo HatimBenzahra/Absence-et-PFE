@@ -210,16 +210,26 @@ $text-soft: #64748b;
 }
 
 @media (max-width: 1024px) {
+  .layout-sidenav {
+    width: 85vw;
+    max-width: 320px;
+  }
+
   .topbar {
     padding: 0 14px;
+    height: 60px;
   }
 
   .title-block h1 {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   .identity {
     display: none;
+  }
+
+  .content-area {
+    padding: 12px 8px;
   }
 
   .logout-btn {
@@ -230,5 +240,43 @@ $text-soft: #64748b;
     mat-icon {
       margin: 0;
     }
+  }
+}
+
+@media (max-width: 600px) {
+  .layout-sidenav {
+    width: 90vw;
+    max-width: 300px;
+    padding: 16px 12px;
+  }
+
+  .brand-block {
+    margin-bottom: 18px;
+    padding: 10px 8px 12px;
+  }
+
+  .nav-link {
+    padding: 12px 10px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .topbar {
+    height: 54px;
+    gap: 8px;
+  }
+
+  .title-block h1 {
+    font-size: 16px;
+  }
+
+  .content-area {
+    padding: 8px 4px;
+  }
+
+  .avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 11px;
   }
 }

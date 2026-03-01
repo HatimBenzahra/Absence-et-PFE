@@ -1,278 +1,410 @@
 $burgundy: #6d1d4a;
+$burgundy-dark: #4a1233;
 $teal: #0097c4;
 $teal-light: rgba(0, 151, 196, 0.12);
-$teal-mid: rgba(0, 151, 196, 0.18);
-$burgundy-dark: #4a1233;
-$surface: #ffffff;
 $border: #e2e8f0;
 $text-primary: #1e293b;
 $text-muted: #64748b;
-$bg: #f8fafc;
+$surface: #ffffff;
 
-// ── Page wrapper ──────────────────────────────────────────────────────────────
+// ── Page (mobile-first) ──────────────────────────────────────
 
 .scanner-page {
   min-height: 100%;
-  padding: 32px 24px;
-  max-width: 560px;
+  padding: 16px;
+  max-width: 520px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
 }
 
-// ── Header ────────────────────────────────────────────────────────────────────
+// ── Header ───────────────────────────────────────────────────
 
 .page-header {
   text-align: center;
-  padding: 8px 0 4px;
+  padding: 8px 0;
 }
 
 .header-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
-  margin-bottom: 16px;
-  box-shadow: 0 8px 24px rgba(109, 29, 74, 0.28);
-}
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, $burgundy-dark, $burgundy, #8b2960);
+  margin-bottom: 12px;
+  box-shadow: 0 6px 20px rgba($burgundy, 0.3);
 
-.qr-icon {
-  font-size: 32px;
-  color: #fff;
-  line-height: 1;
+  mat-icon {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #fff;
+  }
 }
 
 .page-title {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 700;
   color: $text-primary;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
+  margin-bottom: 6px;
 }
 
 .page-subtitle {
   font-size: 14px;
   color: $text-muted;
-  line-height: 1.6;
-  max-width: 380px;
+  line-height: 1.5;
+  max-width: 320px;
   margin: 0 auto;
 }
 
-// ── Scanner card ──────────────────────────────────────────────────────────────
+// ── Action Zone (initial state) ──────────────────────────────
 
-.scanner-card {
-  border-radius: 16px !important;
-  border: 1px solid $border !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04) !important;
-  overflow: hidden !important;
+.action-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
 
-  mat-card-header {
-    background: linear-gradient(135deg, $burgundy-dark 0%, $burgundy 60%, #8b2960 100%);
-    padding: 20px 24px;
-    margin-bottom: 0;
+.scan-btn {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 24px;
+  border: 2px dashed rgba($teal, 0.3);
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba($teal, 0.04), rgba($teal, 0.08));
+  cursor: pointer;
+  transition: all 0.2s ease;
 
-    mat-card-title {
-      color: #fff !important;
-      font-size: 16px;
-      font-weight: 600;
-    }
+  &:hover:not([disabled]) {
+    border-color: $teal;
+    background: linear-gradient(145deg, rgba($teal, 0.06), rgba($teal, 0.12));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba($teal, 0.15);
+  }
 
-    mat-card-subtitle {
-      color: rgba(255, 255, 255, 0.75) !important;
-      font-size: 13px;
-      margin-top: 2px;
+  &:active:not([disabled]) {
+    transform: translateY(0);
+  }
+
+  &[disabled] {
+    opacity: 0.5;
+    cursor: default;
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $teal, darken($teal, 10%));
+    box-shadow: 0 4px 16px rgba($teal, 0.35);
+
+    mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: #fff;
     }
   }
 
-  mat-card-content {
-    padding: 24px !important;
+  &__label {
+    font-size: 16px;
+    font-weight: 700;
+    color: $text-primary;
+  }
+
+  &__hint {
+    font-size: 13px;
+    color: $text-muted;
   }
 }
 
-// ── Form ──────────────────────────────────────────────────────────────────────
+.manual-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: none;
+  background: none;
+  color: $text-muted;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: color 0.2s, background 0.2s;
 
-.scanner-form {
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    color: $teal;
+    background: $teal-light;
+  }
+}
+
+// ── Camera Zone ─────────────────────────────────────────────
+
+.camera-zone {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
+}
+
+.camera-viewport {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  aspect-ratio: 4 / 3;
+}
+
+.camera-feed {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.camera-canvas {
+  display: none;
+}
+
+.scan-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.scan-frame {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  border-radius: 12px;
+  box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.35);
+  animation: pulse-frame 2s ease-in-out infinite;
+
+  .corner {
+    position: absolute;
+    width: 28px;
+    height: 28px;
+
+    &--tl { top: -2px; left: -2px; border-top: 3px solid $teal; border-left: 3px solid $teal; border-radius: 8px 0 0 0; }
+    &--tr { top: -2px; right: -2px; border-top: 3px solid $teal; border-right: 3px solid $teal; border-radius: 0 8px 0 0; }
+    &--bl { bottom: -2px; left: -2px; border-bottom: 3px solid $teal; border-left: 3px solid $teal; border-radius: 0 0 0 8px; }
+    &--br { bottom: -2px; right: -2px; border-bottom: 3px solid $teal; border-right: 3px solid $teal; border-radius: 0 0 8px 0; }
+  }
+}
+
+@keyframes pulse-frame {
+  0%, 100% { box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.35); }
+  50%      { box-shadow: 0 0 0 2000px rgba(0, 0, 0, 0.28); }
+}
+
+.scan-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cancel-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid $border;
+  border-radius: 12px;
+  background: $surface;
+  color: $text-muted;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.04);
+  }
+}
+
+// ── Camera Error ─────────────────────────────────────────────
+
+.camera-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(239, 68, 68, 0.06);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 12px;
+
+  mat-icon { font-size: 32px; width: 32px; height: 32px; color: #ef4444; }
+  p { font-size: 14px; color: #b91c1c; margin: 0; line-height: 1.5; }
+}
+
+// ── Manual Card ──────────────────────────────────────────────
+
+.manual-card {
+  border-radius: 16px !important;
+  border: 1px solid $border !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+
+  .manual-card__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, $burgundy-dark, $burgundy, #8b2960);
+    padding: 16px 20px;
+    color: #fff;
+
+    > mat-icon { font-size: 22px; width: 22px; height: 22px; opacity: 0.85; }
+    h2 { font-size: 15px; font-weight: 700; margin: 0; }
+    p { font-size: 12px; color: rgba(255, 255, 255, 0.75); margin: 2px 0 0; }
+  }
+}
+
+.manual-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
 }
 
 .token-field {
   width: 100%;
 
-  // Override outline field accent to teal
-  ::ng-deep {
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: $border !important;
-    }
-
-    &.mat-focused {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__notch,
-      .mdc-notched-outline__trailing {
-        border-color: $teal !important;
-        border-width: 2px !important;
-      }
-
-      .mat-mdc-floating-label {
-        color: $teal !important;
-      }
-    }
-
-    input {
-      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-      font-size: 15px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
+  ::ng-deep input {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
   }
 }
 
-// ── Pointer button ────────────────────────────────────────────────────────────
-
-.pointer-btn {
+.submit-btn {
   width: 100%;
   height: 48px;
   border-radius: 10px !important;
-  background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
+  background: linear-gradient(135deg, $teal, darken($teal, 8%)) !important;
   color: #fff !important;
   font-size: 15px !important;
   font-weight: 600 !important;
-  letter-spacing: 0.01em;
-  box-shadow: 0 4px 14px rgba(0, 151, 196, 0.35) !important;
-  transition: box-shadow 0.2s ease, transform 0.15s ease !important;
-
-  &:not([disabled]):hover {
-    box-shadow: 0 6px 20px rgba(0, 151, 196, 0.45) !important;
-    transform: translateY(-1px);
-  }
-
-  &:not([disabled]):active {
-    transform: translateY(0);
-    box-shadow: 0 2px 8px rgba(0, 151, 196, 0.3) !important;
-  }
-
-  &[disabled] {
-    opacity: 0.6;
-    background: linear-gradient(135deg, $teal 0%, darken($teal, 8%) 100%) !important;
-    box-shadow: none !important;
-  }
-}
-
-.btn-inner {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  box-shadow: 0 4px 14px rgba($teal, 0.3) !important;
+
+  &:not([disabled]):hover {
+    box-shadow: 0 6px 20px rgba($teal, 0.4) !important;
+  }
+
+  &[disabled] { opacity: 0.6; }
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
 }
 
-.btn-icon {
-  font-size: 17px;
-  line-height: 1;
+.back-to-scan {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: none;
+  color: $teal;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border-top: 1px solid $border;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover { background: $teal-light; }
 }
 
-// ── Loading spinner ───────────────────────────────────────────────────────────
-
-.spinner {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.4);
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-// ── Result card ───────────────────────────────────────────────────────────────
+// ── Result Card ──────────────────────────────────────────────
 
 .result-card {
   border-radius: 16px !important;
   border: 1px solid $border !important;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06), 0 4px 20px rgba(0, 0, 0, 0.04) !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06) !important;
   overflow: hidden !important;
+  padding: 0 !important;
   animation: slideIn 0.3s ease;
 
-  mat-card-header {
-    background: $teal-light;
-    padding: 16px 24px;
-    border-bottom: 1px solid $teal-mid;
-    margin-bottom: 0;
-  }
-
-  .result-title {
-    color: darken($teal, 10%) !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
+  .result-card__header {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    background: rgba(16, 185, 129, 0.08);
+    padding: 16px 20px;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
 
-    &::before {
-      content: '✓';
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      background: $teal;
-      color: #fff;
-      border-radius: 50%;
-      font-size: 12px;
-      font-weight: 700;
-    }
+    h2 { font-size: 15px; font-weight: 700; color: #059669; margin: 0; }
   }
 
-  mat-card-content {
-    padding: 20px 24px !important;
+  .result-check mat-icon {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    color: #10b981;
   }
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-// ── Result grid ───────────────────────────────────────────────────────────────
-
-.result-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
+.result-grid { padding: 16px 20px; }
 
 .result-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 11px 0;
+  padding: 10px 0;
   border-bottom: 1px solid $border;
 
-  &:last-child {
-    border-bottom: none;
-  }
+  &:last-child { border-bottom: none; }
 }
 
 .result-label {
   font-size: 13px;
   color: $text-muted;
   font-weight: 500;
-  flex-shrink: 0;
 }
 
 .result-value {
@@ -284,12 +416,11 @@ $bg: #f8fafc;
   &.mono {
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
-    letter-spacing: 0.03em;
     color: $text-muted;
   }
 }
 
-// ── Statut badge ──────────────────────────────────────────────────────────────
+// ── Statut badges ────────────────────────────────────────────
 
 .statut-badge {
   display: inline-block;
@@ -297,38 +428,49 @@ $bg: #f8fafc;
   border-radius: 999px;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.04em;
   text-transform: uppercase;
 
-  &.statut-present {
-    background: rgba(16, 185, 129, 0.12);
-    color: #059669;
-  }
-
-  &.statut-absent {
-    background: rgba(239, 68, 68, 0.1);
-    color: #dc2626;
-  }
-
-  &.statut-retard {
-    background: rgba(245, 158, 11, 0.12);
-    color: #d97706;
-  }
-
-  &.statut-excuse {
-    background: $teal-light;
-    color: darken($teal, 8%);
-  }
+  &.statut-present { background: rgba(16, 185, 129, 0.12); color: #059669; }
+  &.statut-absent  { background: rgba(239, 68, 68, 0.1); color: #dc2626; }
+  &.statut-retard  { background: rgba(245, 158, 11, 0.12); color: #d97706; }
+  &.statut-excuse  { background: $teal-light; color: darken($teal, 8%); }
 }
 
-// ── Responsive ────────────────────────────────────────────────────────────────
+// ── Scan Again ───────────────────────────────────────────────
 
-@media (max-width: 600px) {
+.scan-again-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid $teal;
+  border-radius: 12px;
+  background: none;
+  color: $teal;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+
+  &:hover { background: $teal-light; }
+}
+
+// ── Desktop adjustments ──────────────────────────────────────
+
+@media (min-width: 600px) {
   .scanner-page {
-    padding: 20px 16px;
+    padding: 32px 24px;
+    gap: 24px;
   }
 
-  .page-title {
-    font-size: 22px;
+  .page-title { font-size: 26px; }
+
+  .scan-frame {
+    width: 220px;
+    height: 220px;
   }
 }

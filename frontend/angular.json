@@ -98,7 +98,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "allowedHosts": [".lhr.life", ".loca.lt", ".ngrok-free.app"]
+            "allowedHosts": [".lhr.life", ".loca.lt", ".ngrok-free.app", ".ngrok-free.dev"]
           }
         }
       }

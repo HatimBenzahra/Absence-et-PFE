@@ -212,3 +212,54 @@ $text-muted: #64748b;
     color: #b91c1c;
   }
 }
+
+// ─── Mobile ──────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .page-wrapper {
+    padding: 8px;
+    gap: 16px;
+  }
+
+  .card-header {
+    padding: 14px 16px;
+
+    &__title {
+      font-size: 15px;
+    }
+  }
+
+  .card-body {
+    padding: 16px 12px;
+  }
+
+  .submit-form {
+    gap: 12px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .jus-table {
+    th.mat-header-cell {
+      padding: 10px 12px;
+      font-size: 11px;
+    }
+
+    td.mat-cell {
+      padding: 12px;
+      font-size: 13px;
+    }
+  }
+
+  .cell-motif,
+  .cell-comment {
+    max-width: 160px;
+  }
+
+  .statut-chip {
+    font-size: 11px;
+    padding: 3px 10px;
+  }
+}

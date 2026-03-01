@@ -277,3 +277,57 @@ $bg: #f8fafc;
     transform: translateY(0);
   }
 }
+
+/* ─── Mobile ──────────────────────────────────── */
+@media (max-width: 600px) {
+  .sujets-container {
+    padding: 8px;
+  }
+
+  .card-header {
+    padding: 20px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .page-subtitle {
+    font-size: 13px;
+  }
+
+  .header-badge {
+    padding: 8px 14px;
+    border-radius: 10px;
+    min-width: auto;
+
+    .badge-count {
+      font-size: 22px;
+    }
+  }
+
+  .card-body {
+    padding: 12px;
+  }
+
+  .sujets-table {
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      padding: 10px 10px;
+    }
+
+    // Hide description & keywords on mobile — too wide
+    .mat-column-description,
+    .mat-column-motsCles {
+      display: none;
+    }
+  }
+
+  .candidater-btn {
+    font-size: 12px !important;
+    padding: 0 12px !important;
+    height: 32px !important;
+  }
+}

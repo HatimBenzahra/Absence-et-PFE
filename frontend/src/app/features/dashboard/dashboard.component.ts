@@ -128,6 +128,61 @@ import { AuthService } from '../../core/services/auth.service';
         font-weight: 600;
       }
     }
+  `,
+ `
+    @media (max-width: 600px) {
+      .hero-card {
+        padding: 20px 16px;
+        border-radius: 14px;
+
+        .eyebrow {
+          font-size: 11px;
+        }
+
+        h2 {
+          font-size: 20px;
+          margin-bottom: 8px;
+        }
+
+        p {
+          font-size: 13px;
+        }
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 14px;
+        border-radius: 10px;
+
+        mat-icon {
+          width: 28px;
+          height: 28px;
+          font-size: 28px;
+        }
+
+        .value {
+          font-size: 16px;
+        }
+      }
+
+      .quick-list {
+        padding: 16px;
+        border-radius: 10px;
+
+        h3 {
+          font-size: 15px;
+        }
+      }
+
+      .chips span {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+    }
   `],
 })
 export class DashboardComponent {

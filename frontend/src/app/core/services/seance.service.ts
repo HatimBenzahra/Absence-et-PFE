@@ -14,8 +14,9 @@ export class SeanceService {
     return this.http.get<Seance[]>(`${this.apiUrl}/mes-seances`);
   }
 
+  /** Used by ENSEIGNANT to create their own séance */
   create(seance: SeanceCreate): Observable<Seance> {
-    return this.http.post<Seance>(this.apiUrl, seance);
+    return this.http.post<Seance>(`${this.apiUrl}/ma-seance`, seance);
   }
 
   getAllSeances(): Observable<Seance[]> {

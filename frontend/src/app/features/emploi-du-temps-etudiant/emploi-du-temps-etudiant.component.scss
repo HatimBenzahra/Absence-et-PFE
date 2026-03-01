@@ -402,3 +402,117 @@ $surface:       #fff;
     margin: 0;
   }
 }
+
+// ─── Mobile ──────────────────────────────────────────────────────────────────
+@media (max-width: 600px) {
+  .page-header {
+    padding: 20px 16px;
+    border-radius: 14px;
+    gap: 12px;
+
+    &__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+
+      mat-icon {
+        font-size: 22px;
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    &__title {
+      font-size: 20px;
+    }
+
+    &__subtitle {
+      font-size: 13px;
+    }
+  }
+
+  .calendar-controls {
+    gap: 10px;
+  }
+
+  .week-label {
+    font-size: 13px;
+  }
+
+  .legend-pill {
+    font-size: 10px;
+    padding: 2px 7px;
+  }
+
+  .calendar-card {
+    border-radius: 12px;
+  }
+
+  // Ensure calendar scrolls horizontally
+  .calendar-grid {
+    grid-template-columns: 44px repeat(6, minmax(72px, 1fr));
+    grid-template-rows: auto repeat(11, 50px);
+  }
+
+  .grid-time {
+    font-size: 10px;
+    padding: 3px 4px 0 0;
+  }
+
+  .grid-day-header {
+    padding: 8px 4px;
+
+    .day-name {
+      font-size: 10px;
+      letter-spacing: 0.4px;
+    }
+
+    .day-date {
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+
+      &--today {
+        font-size: 13px;
+      }
+    }
+  }
+
+  .event-block {
+    .event-top-row {
+      gap: 2px;
+    }
+
+    .event-type-badge {
+      font-size: 8px;
+      padding: 1px 4px;
+    }
+
+    .event-time {
+      font-size: 8px;
+    }
+
+    .event-matiere {
+      font-size: 11px;
+    }
+
+    .event-detail {
+      font-size: 9px;
+    }
+  }
+
+  .empty-state {
+    padding: 48px 16px;
+
+    .empty-icon-wrapper {
+      width: 56px;
+      height: 56px;
+
+      mat-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+}
